@@ -1,13 +1,31 @@
 package tween;
+
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import aurelienribon.tweenengine.TweenAccessor;
-public class SpriteAccessor implements TweenAccessor<Sprite>{
-    @Override
-    public int getValues(Sprite target, int tweenType, float[] returnValues) {
-        return 0;
-    }
+
+public class SpriteAccessor implements TweenAccessor<Sprite> {
+    public static final int ALPHA = 0;
 
     @Override
-    public void setValues(Sprite target, int tweenType, float[] newValues) {
+    public int getValues(Sprite target, int tweenType, float[] returnValues) {
+        switch (tweenType) {
+            case ALPHA:
+                returnValues[0] = target.getColor().a;
+                return 1;
+            default: //if the tweenType that is passed doesn't match any cases
+                assert false;
+                return -1;
+        }
     }
+
+        @Override
+        public void setValues (Sprite target,int tweenType, float[] newValues){
+            switch (tweenType) {
+                case ALPHA:
+                    target.setColor(target.getColor().r, target.getColor().g, target.getColor().b, newValues[0]);
+                    break;
+                default:
+                    assert false;
+            }
+        }
 }

@@ -8,8 +8,9 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setTitle("very cool game");
+		config.useVsync(true);
 		config.setForegroundFPS(60);
 		config.setWindowedMode(1920, 1080);
-		new Lwjgl3Application(new GameMain(), config);
+		new Lwjgl3Application(new GameMain(),  config);
 	}
 }
