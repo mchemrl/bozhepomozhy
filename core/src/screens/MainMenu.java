@@ -46,13 +46,6 @@ public class MainMenu implements Screen {
         white = new BitmapFont(Gdx.files.internal("font/white.fnt"), false);
         black = new BitmapFont(Gdx.files.internal("font/black.fnt"), false);
 
-        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.up = skin.getDrawable("playbutton.up");
-        textButtonStyle.down = skin.getDrawable("playbutton.down");
-        textButtonStyle.pressedOffsetX = 1;
-        textButtonStyle.pressedOffsetY = -1;
-        textButtonStyle.font = white;
-
         buttomExit = new TextButton("EXIT", skin);
         buttomExit.getLabel().setFontScale(2.0f);
         buttomExit.addListener(new ClickListener() {
@@ -97,8 +90,6 @@ public class MainMenu implements Screen {
 
         buttonPlay.pad(20);
 
-        Label.LabelStyle headingStyle = new Label.LabelStyle();
-        headingStyle.font = white;
         heading = new Label("Main Menu", skin);
         heading.setFontScale(3);
 
@@ -112,10 +103,10 @@ public class MainMenu implements Screen {
         Tween.registerAccessor(Actor.class, new ActorAccessor());
         //heading color change
         Timeline.createSequence().beginSequence()
-                .push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(0, 0, 1))
-                .push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(0, 1, 0))
-                .push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(1, 0, 0))
+                .push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(0, 0, 0))
+                .push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(1, 0, 1))
                 .push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(1, 1, 0))
+                .push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(0, 1, 1))
                 .push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(0, 1, 1))
                 .push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(1, 0, 1))
                 .push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(1, 1, 1))

@@ -1,0 +1,41 @@
+{
+  "com.badlogic.gdx.graphics.Color": {
+    "white": {"r": 1, "g": 1, "b": 1, "a": 1},
+    "black": {"r": 0, "g": 0, "b": 0, "a": 1},
+    "red": {"r": 1, "g": 0, "b": 0, "a": 1},
+    "green": {"r": 0, "g": 1, "b": 0, "a": 1},
+    "blue": {"r": 0, "g": 0, "b": 1, "a": 1},
+    "light_gray": {"r": 0.75, "g": 0.75, "b": 0.75, "a": 1},
+    "gray": {"r": 0.5, "g": 0.5, "b": 0.5, "a": 1},
+    "dark_gray": {"r": 0.25, "g": 0.25, "b": 0.25, "a": 1},
+    "pink": {"r": 1, "g": 0.68, "b": 0.68, "a": 1},
+    "orange": {"r": 1, "g": 0.68, "b": 0.26, "a": 1},
+    "yellow": {"r": 1, "g": 1, "b": 0, "a": 1},
+    "cyan": {"r": 0, "g": 1, "b": 1, "a": 1},
+    "purple": {"r": 0.68, "g": 0.26, "b": 1, "a": 1},
+    "olive": {"r": 0.26, "g": 0.68, "b": 0.26, "a": 1},
+    "clear": {"r": 0, "g": 0, "b": 0, "a": 0},
+    "magenta": {"r": 1, "g": 0, "b": 1, "a": 1},
+    "maroon": {"r": 0.68, "g": 0.26, "b": 0.26, "a": 1}
+  },
+  "com.badlogic.gdx.graphics.g2d.BitmapFont": {
+    "white": { "file": "font/white.fnt"},
+    "black": { "file": "font/black.fnt"}
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
+    "default": {
+      "font": "white",
+      "fontColor": "white"
+    }
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
+    "default": {
+      "up": "playbutton.up",
+      "down": "playbutton.down",
+      "pressedOffsetX": 1,
+      "pressedOffsetY": -1,
+      "font": "white",
+      "fontColor": "white"
+    }
+  }
+}
