@@ -6,7 +6,7 @@ import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -16,7 +16,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import tween.ActorAccessor;
 
@@ -28,40 +27,44 @@ public class MainMenu implements Screen {
     private TextButton buttomExit, buttonPlay;
     private Label heading;
     private Skin skin;
-    private BitmapFont white, black;
     private TextureAtlas atlas;
     private TweenManager tweenManager;
+    private Sound buttonClickSound;
+    private Sound buttonHoverSound;
 
     @Override
     public void show() {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
-        atlas = new TextureAtlas("ui/button.txt");
-        skin = new Skin(Gdx.files.internal("ui/menuSkin.json"), atlas);
+        atlas = new TextureAtlas("ui/mainmenu/button.txt");
+        skin = new Skin(Gdx.files.internal("ui/mainmenu/menuSkin.json"), atlas);
 
         table = new Table(skin);
         table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        white = new BitmapFont(Gdx.files.internal("font/white.fnt"), false);
-        black = new BitmapFont(Gdx.files.internal("font/black.fnt"), false);
+        buttonClickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/buttonclicked.ogg"));
+        buttonHoverSound = Gdx.audio.newSound(Gdx.files.internal("sounds/buttonhover.ogg"));
 
         buttomExit = new TextButton("EXIT", skin);
         buttomExit.getLabel().setFontScale(2.0f);
         buttomExit.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                buttonClickSound.play();
                 Gdx.app.exit();
             }
         });
         buttomExit.addListener(new InputListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                buttonHoverSound.play();
                 buttomExit.getLabel().setFontScale(2.2f);
             }
 
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                buttonHoverSound.play();
                 buttomExit.getLabel().setFontScale(2.0f);
             }
         });
@@ -73,17 +76,20 @@ public class MainMenu implements Screen {
         buttonPlay.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                buttonClickSound.play();
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new Levels());
             }
         });
         buttonPlay.addListener(new InputListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                buttonHoverSound.play();
                 buttonPlay.getLabel().setFontScale(2.2f);
             }
 
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                buttonHoverSound.play();
                 buttonPlay.getLabel().setFontScale(1.8f);
             }
         });
@@ -105,10 +111,9 @@ public class MainMenu implements Screen {
         Timeline.createSequence().beginSequence()
                 .push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(0, 0, 0))
                 .push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(1, 0, 1))
-                .push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(1, 1, 0))
-                .push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(0, 1, 1))
-                .push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(0, 1, 1))
-                .push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(1, 0, 1))
+                .push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(1, .68f, .68f))
+                .push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(.68f, .26f, 1))
+                .push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(.68f, .26f, .26f))
                 .push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(1, 1, 1))
                 .end().repeat(Tween.INFINITY, 0).start(tweenManager);
         //heading and buttons fade-in
@@ -161,7 +166,7 @@ public class MainMenu implements Screen {
         stage.dispose();
         atlas.dispose();
         skin.dispose();
-        white.dispose();
-        black.dispose();
+        buttonClickSound.dispose();
+        buttonHoverSound.dispose();
     }
 }
