@@ -110,10 +110,7 @@ public class MainMenu implements Screen {
         //heading color change
         Timeline.createSequence().beginSequence()
                 .push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(0, 0, 0))
-                .push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(1, 0, 1))
-                .push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(1, .68f, .68f))
-                .push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(.68f, .26f, 1))
-                .push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(.68f, .26f, .26f))
+                .push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(1, .65f, 1))
                 .push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(1, 1, 1))
                 .end().repeat(Tween.INFINITY, 0).start(tweenManager);
         //heading and buttons fade-in
