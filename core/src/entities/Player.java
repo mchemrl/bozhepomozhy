@@ -28,43 +28,54 @@ public class Player extends Sprite implements InputProcessor {
     }
 
     public void update(float delta) {
-        //velocity.y -= gravity * delta;
-
-        //if (velocity.y > speed) velocity.y = speed;
-       // else if (velocity.y < speed) velocity.y = -speed;
-
         float oldX = getX(), oldY = getY(), tileWidth = collisionLayer.getTileWidth(), tileHeight = collisionLayer.getTileHeight();
+        int pixelsToMove = (int) (speed * delta);
 
-        setX(getX() + velocity.x * delta);
+        for (int i = 0; i < pixelsToMove; i++) {
+            if (velocity.x != 0) {
+                setX(getX() + Math.signum(velocity.x));
 
-        boolean collisionX = false, collisionY = false;
+                boolean collisionX;
+                if (velocity.x < 0) {
+                    // Check collision on the left side (middle left)
+                    collisionX = collisionLayer.getCell((int) ((getX()) / tileWidth), (int) ((getY() + getHeight() / 2) / tileHeight)).getTile().getProperties().containsKey("blocked");
+                } else {
+                    // Check collision on the right side (middle right)
+                    collisionX = collisionLayer.getCell((int) ((getX() + getWidth()) / tileWidth), (int) ((getY() + getHeight() / 2) / tileHeight)).getTile().getProperties().containsKey("blocked");
+                }
 
-        if (velocity.x < 0) {
-            //middle left
-            collisionX = collisionLayer.getCell((int) (getX() / tileWidth), (int) ((getY() + getHeight() / 2) / tileHeight)).getTile().getProperties().containsKey("blocked");
-        } else if (velocity.x > 0) {
-            //middle right
-            collisionX = collisionLayer.getCell((int) ((getX() + getWidth()) / tileWidth), (int) ((getY() + getHeight() / 2) / tileHeight)).getTile().getProperties().containsKey("blocked");
-        }
+                if (collisionX) {
+                    setX(oldX);
+                    velocity.x = 0;
+                    break;
+                }
 
-        if (collisionX) {
-            setX(oldX);
-            velocity.x = 0;
-        }
-
-        setY(getY() + velocity.y * delta);
-
-        if (velocity.y < 0) {
-            //bottom middle
-                collisionY = collisionLayer.getCell((int) ((getX() + getWidth() / 2) / tileWidth), (int) (getY() / tileHeight)).getTile().getProperties().containsKey("blocked");
-             } else if (velocity.y > 0) {
-            if (!collisionY)
-                collisionY = collisionLayer.getCell((int) ((getX() + getWidth() / 2) / tileWidth), (int) ((getY() + getHeight()) / tileHeight)).getTile().getProperties().containsKey("blocked");
+                oldX = getX();
             }
 
-        if (collisionY) {
-            setY(oldY);
-            velocity.y = 0;
+            // Continue with your existing x-axis collision detection and movement code...
+
+            // Move and check collision on the y-axis
+            if (velocity.y != 0) {
+                setY(getY() + Math.signum(velocity.y));
+
+                boolean collisionY;
+                if (velocity.y < 0) {
+                    // Check collision on the bottom side (bottom middle)
+                    collisionY = collisionLayer.getCell((int) ((getX() + getWidth() / 2) / tileWidth), (int) ((getY()) / tileHeight)).getTile().getProperties().containsKey("blocked");
+                } else {
+                    // Check collision on the top side (top middle)
+                    collisionY = collisionLayer.getCell((int) ((getX() + getWidth() / 2) / tileWidth), (int) ((getY() + getHeight()) / tileHeight)).getTile().getProperties().containsKey("blocked");
+                }
+
+                if (collisionY) {
+                    setY(oldY);
+                    velocity.y = 0;
+                    break;
+                }
+
+                oldY = getY();
+            }
         }
     }
     //TODO when the player is moving you can't press any other keys
@@ -86,6 +97,10 @@ public class Player extends Sprite implements InputProcessor {
                 break;
         }
         return true;
+    }
+    private boolean isTileBlocked(float x, float y) {
+        TiledMapTileLayer.Cell cell = collisionLayer.getCell((int) (x / collisionLayer.getTileWidth()), (int) (y / collisionLayer.getTileHeight()));
+        return cell != null && cell.getTile().getProperties().containsKey("blocked");
     }
 
     private void checkCollision() {
