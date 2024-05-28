@@ -55,6 +55,7 @@ public class Levels implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 buttonClickSound.play();
+                menuMusic.stop();
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new Level1());
             }});
 

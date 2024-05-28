@@ -11,25 +11,40 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import entities.Player;
+import com.badlogic.gdx.audio.Music;
 
 public class Level1 implements Screen {
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
     private Player player;
+    private Music mapMusic;
     @Override
     public void show() {
+        mapMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/deathbyglamour.wav"));
+
+        mapMusic.setVolume(0.15f);
+        mapMusic.play();
+        mapMusic.setLooping(true);
+
         map = new TmxMapLoader().load("maps/map1.tmx");
         renderer = new OrthogonalTiledMapRenderer(map);
         camera = new OrthographicCamera();
+
         player = new Player(new Sprite(new Texture("img/player.png")), (TiledMapTileLayer) map.getLayers().get(0));
-        player.setPosition(player.getX()+7*32, player.getY()+5*32);
+        player.setPosition(player.getX()+22*32, player.getY()+5*32);
+
+        Gdx.input.setInputProcessor(player);
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor( 0, 0,0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        camera.position.set(player.getX() + player.getWidth()/2, player.getY() + player.getWidth()/2, 0);
+        camera.update();
+
         renderer.setView(camera);
         renderer.render();
         renderer.getBatch().begin();
@@ -39,8 +54,8 @@ public class Level1 implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        camera.viewportWidth =width;
-        camera.viewportHeight = height;
+        camera.viewportWidth =width/2;
+        camera.viewportHeight = height/2;
         camera.update();
     }
 
@@ -64,6 +79,5 @@ public class Level1 implements Screen {
         map.dispose();
         renderer.dispose();
         player.getTexture().dispose();
-
     }
 }
