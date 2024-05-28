@@ -27,19 +27,19 @@ public class Level1 implements Screen {
         mapMusic.play();
         mapMusic.setLooping(true);
 
-        map = new TmxMapLoader().load("maps/map1.tmx");
+        map = new TmxMapLoader().load("maps/nature1.tmx");
         renderer = new OrthogonalTiledMapRenderer(map);
         camera = new OrthographicCamera();
 
         player = new Player(new Sprite(new Texture("img/player.png")), (TiledMapTileLayer) map.getLayers().get(0));
-        player.setPosition(player.getX()+22*32, player.getY()+5*32);
+        player.setPosition(player.getX()+22*16, player.getY()+5*16);
 
         Gdx.input.setInputProcessor(player);
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor( 0, 0,0, 1);
+        Gdx.gl.glClearColor(0.431f, 0.8f, 0.788f, 1); //pretty blue colour
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         camera.position.set(player.getX() + player.getWidth()/2, player.getY() + player.getWidth()/2, 0);

@@ -9,7 +9,7 @@ public class GameMain extends Game {
 	
 	@Override
 	public void create () {
-		setScreen(new screens.Level1());
+		setScreen(new screens.Splash());
 	}
 
 	@Override

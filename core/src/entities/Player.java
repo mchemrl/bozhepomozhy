@@ -37,10 +37,8 @@ public class Player extends Sprite implements InputProcessor {
 
                 boolean collisionX;
                 if (velocity.x < 0) {
-                    // Check collision on the left side (middle left)
                     collisionX = collisionLayer.getCell((int) ((getX()) / tileWidth), (int) ((getY() + getHeight() / 2) / tileHeight)).getTile().getProperties().containsKey("blocked");
                 } else {
-                    // Check collision on the right side (middle right)
                     collisionX = collisionLayer.getCell((int) ((getX() + getWidth()) / tileWidth), (int) ((getY() + getHeight() / 2) / tileHeight)).getTile().getProperties().containsKey("blocked");
                 }
 
@@ -52,19 +50,13 @@ public class Player extends Sprite implements InputProcessor {
 
                 oldX = getX();
             }
-
-            // Continue with your existing x-axis collision detection and movement code...
-
-            // Move and check collision on the y-axis
             if (velocity.y != 0) {
                 setY(getY() + Math.signum(velocity.y));
 
                 boolean collisionY;
                 if (velocity.y < 0) {
-                    // Check collision on the bottom side (bottom middle)
                     collisionY = collisionLayer.getCell((int) ((getX() + getWidth() / 2) / tileWidth), (int) ((getY()) / tileHeight)).getTile().getProperties().containsKey("blocked");
                 } else {
-                    // Check collision on the top side (top middle)
                     collisionY = collisionLayer.getCell((int) ((getX() + getWidth() / 2) / tileWidth), (int) ((getY() + getHeight()) / tileHeight)).getTile().getProperties().containsKey("blocked");
                 }
 
