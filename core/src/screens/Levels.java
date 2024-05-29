@@ -1,31 +1,40 @@
 package screens;
 
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import tween.ActorAccessor;
 
 public class Levels implements Screen {
     private Stage stage;
-    private TextureAtlas atlas;
-    private Skin skin;
     private Table table;
     private TextButton settingButton;
     private TextButton level1Button;
+    private TextButton level2Button;
+    private TextButton level3Button;
     private Label heading1;
     private Label heading2;
+    private Skin skin;
+    private TextureAtlas atlas;
+    private TweenManager tweenManager;
     private Sound buttonClickSound;
-    private Music menuMusic;
+    private boolean level1Passed;
+    private boolean level2Passed;
+
     @Override
     public void show() {
         stage = new Stage();
@@ -38,40 +47,62 @@ public class Levels implements Screen {
         table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         buttonClickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/select.ogg"));
-        menuMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/menumusic.wav"));
-
-        menuMusic.setVolume(0.15f);
-        menuMusic.play();
-        menuMusic.setLooping(true);
 
         heading1 = new Label("MAP", skin, "map");
-        heading1.setColor(1, 1,1,1);
+        heading1.setColor(1, 1, 1, 1);
         heading2 = new Label("STAGEBASED MOD", skin, "mod");
         heading1.setFontScale(.8f);
         heading2.setFontScale(.5f);
 
         level1Button = new TextButton("1", skin, "levelbutton");
-        level1Button.addListener(new ClickListener(){
+        level1Button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 buttonClickSound.play();
-                menuMusic.stop();
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new Level1());
-            }});
+            }
+        });
 
-        settingButton = new TextButton("", skin, "settingbutton"); //add later
+        level2Button = new TextButton("2", skin, "levelbutton");
+        level2Button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                buttonClickSound.play();
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new Level2());
+            }
+        });
 
-        table.add(heading1).spaceBottom(10).row();
-        table.add(heading2).spaceBottom(50).row();
-        table.add(level1Button);
-        table.debug();
+        level3Button = new TextButton("3", skin, "levelbutton");
+        level3Button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                buttonClickSound.play();
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new Level3());
+            }
+        });
+
+
+
+        table.add(heading1).colspan(3).spaceBottom(10).row();
+        table.add(heading2).colspan(3).spaceBottom(30).row();
+        table.add(level1Button).width(100).height(50).pad(20);
+        table.add(level2Button).width(100).height(50).pad(20);
+        table.add(level3Button).width(100).height(50).pad(20);
         stage.addActor(table);
+
+        tweenManager = new TweenManager();
+        Tween.registerAccessor(Actor.class, new ActorAccessor());
+        Tween.from(level1Button, ActorAccessor.ALPHA, 0.5f).target(0).start(tweenManager);
+        Tween.from(level2Button, ActorAccessor.ALPHA, 0.5f).target(0).start(tweenManager);
+        Tween.from(level3Button, ActorAccessor.ALPHA, 0.5f).target(0).start(tweenManager);
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor( 0, 0,0, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        tweenManager.update(delta);
 
         stage.act(delta);
         stage.draw();
@@ -79,22 +110,20 @@ public class Levels implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        stage.getViewport().update(width, height, true);
+        table.invalidateHierarchy();
     }
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void resume() {
-
     }
 
     @Override
     public void hide() {
-
     }
 
     @Override
@@ -102,7 +131,6 @@ public class Levels implements Screen {
         stage.dispose();
         atlas.dispose();
         skin.dispose();
-        menuMusic.dispose();
         buttonClickSound.dispose();
     }
 }
