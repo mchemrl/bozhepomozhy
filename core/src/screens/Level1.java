@@ -10,6 +10,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import entities.Enemy;
 import entities.Player;
 import com.badlogic.gdx.audio.Music;
 
@@ -18,6 +19,8 @@ public class Level1 implements Screen {
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
     private Player player;
+
+    private Enemy crab;
     private Music mapMusic;
     @Override
     public void show() {
@@ -34,6 +37,9 @@ public class Level1 implements Screen {
         player = new Player(new Sprite(new Texture("img/player.png")), (TiledMapTileLayer) map.getLayers().get(0));
         player.setPosition(player.getX()+22*16, player.getY()+5*16);
 
+        crab = new Enemy(new Sprite(new Texture("img/enemies/CrabMoving1.png")));
+        crab.setPosition(map.getProperties().get("width", Integer.class)*6-40, 8*16);
+
         Gdx.input.setInputProcessor(player);
     }
 
@@ -49,6 +55,8 @@ public class Level1 implements Screen {
         renderer.render();
         renderer.getBatch().begin();
         player.draw(renderer.getBatch());
+
+        crab.draw(renderer.getBatch());
         renderer.getBatch().end();
     }
 
@@ -79,5 +87,7 @@ public class Level1 implements Screen {
         map.dispose();
         renderer.dispose();
         player.getTexture().dispose();
+
+        crab.getTexture().dispose();
     }
 }
