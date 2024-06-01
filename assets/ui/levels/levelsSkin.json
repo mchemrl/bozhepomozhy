@@ -25,6 +25,13 @@
     }
   },
   "com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
+    "default": {
+      "up": "levelbutton.up",
+      "pressedOffsetX": 1,
+      "pressedOffsetY": 4,
+      "font": "white",
+      "fontColor": "white"
+    },
     "settingbutton": {
       "up": "settingbutton.up",
       "down": "settingbutton.down",

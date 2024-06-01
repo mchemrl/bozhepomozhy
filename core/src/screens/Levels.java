@@ -34,6 +34,7 @@ public class Levels implements Screen {
     private Sound buttonClickSound;
     private boolean level1Passed;
     private boolean level2Passed;
+    private BottomMenu bottomMenu;
 
     @Override
     public void show() {
@@ -81,7 +82,20 @@ public class Levels implements Screen {
             }
         });
 
-
+        bottomMenu = new BottomMenu(stage, skin,
+                () -> {
+                    // Action for shop button
+                    // Add your logic here
+                },
+                () -> {
+                    // Action for levels button
+                    // Add your logic here
+                },
+                () -> {
+                    // Action for arcade button
+                    // Add your logic here
+                }
+        );
 
         table.add(heading1).colspan(3).spaceBottom(10).row();
         table.add(heading2).colspan(3).spaceBottom(30).row();
