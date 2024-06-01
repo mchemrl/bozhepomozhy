@@ -21,58 +21,75 @@ public class BottomMenu {
     private Stage stage;
     private Table table;
     private TweenManager tweenManager;
+    private String choosen;
+    private TextButton shopButton;
+    private TextButton levelsButton;
+    private TextButton arcadeButton;
+    private Actor currentAnimatedActor;
 
     public BottomMenu(Stage stage, Skin skin, Runnable shopAction, Runnable levelsAction, Runnable arcadeAction) {
         this.stage = stage;
         this.tweenManager = new TweenManager();
+        this.shopButton = new TextButton("Shop", skin);
+        this.levelsButton = new TextButton("Levels", skin);
+        this.arcadeButton = new TextButton("Arcade", skin);
+
+        shopButton.getLabel().setAlignment(Align.center);
+        levelsButton.getLabel().setAlignment(Align.center);
+        arcadeButton.getLabel().setAlignment(Align.center);
+
+        shopButton.getLabelCell().padBottom(20);
+        levelsButton.getLabelCell().padBottom(20);
+        arcadeButton.getLabelCell().padBottom(20);
 
         table = new Table(skin);
         table.setFillParent(true);
         table.center().bottom();
 
-        createTextButton("Shop", skin, shopAction, true, false, new ClickListener() {
+        shopButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                updateAnimation(shopButton.getLabel());
                 shopAction.run();
+                choosen = "Shop";
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new ShopScreen());
             }
         });
-        createTextButton("Levels", skin, levelsAction, true, true, new ClickListener() {
+
+        levelsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                updateAnimation(levelsButton.getLabel());
                 levelsAction.run();
+                choosen = "Levels";
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new Levels());
             }
         });
-        createTextButton("Arcade", skin, arcadeAction, true, false, new ClickListener() {
+
+        arcadeButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                updateAnimation(arcadeButton.getLabel());
                 arcadeAction.run();
+                choosen = "Arcade";
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new ArcadeScreen());
             }
         });
 
+
+        table.add(shopButton).expandX().fillX().height(85).pad(3);
+        table.add(levelsButton).expandX().fillX().height(85).pad(3);
+        table.add(arcadeButton).expandX().fillX().height(85).pad(3);
+
+
         stage.addActor(table);
 
         Tween.registerAccessor(Actor.class, new ActorAccessor());
+
+        animateButtonText(levelsButton.getLabel(), 7);
+        currentAnimatedActor = levelsButton.getLabel();
     }
 
-    private void createTextButton(String text, Skin skin, Runnable action, boolean animate, boolean levelChoosen, ClickListener clickListener) {
-        TextButton button = new TextButton(text, skin);
-        button.getLabel().setAlignment(Align.center);
-
-        // Додайте відступ зверху для тексту кнопки
-        button.getLabelCell().padBottom(20);
-
-        if (levelChoosen) {
-            // Рух тексту на кнопці, якщо вкладка вибрана
-            animateButtonText(button.getLabel(), 7);
-        }
-
-        button.addListener(clickListener);
-
-        table.add(button).expandX().fillX().height(80).pad(0);
-    }
 
     private void animateButtonText(Actor actor, int distance) {
         actor.addAction(Actions.forever(Actions.sequence(
@@ -80,6 +97,21 @@ public class BottomMenu {
                 Actions.moveBy(0, -distance, 0.3f)
         )));
     }
+
+
+    private void updateAnimation(Actor actor) {
+
+        stopAnimation(currentAnimatedActor);
+
+        animateButtonText(actor, 7);
+        currentAnimatedActor = actor;
+    }
+
+
+    private void stopAnimation(Actor actor) {
+        actor.clearActions();
+    }
+
 
     public void update(float delta) {
         tweenManager.update(delta);
