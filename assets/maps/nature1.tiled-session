@@ -3,11 +3,23 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "",
+    "activeFile": "nature1.tmx",
     "expandedProjectPaths": [
     ],
     "file.lastUsedOpenFilter": "Всі файли (*)",
     "fileStates": {
+        "natural.tsx": {
+            "scaleInDock": 2,
+            "scaleInEditor": 4
+        },
+        "nature1.tmx": {
+            "scale": 3,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 665.1666666666666,
+                "y": 823.6666666666666
+            }
+        }
     },
     "last.imagePath": "C:/Users/mcche/Downloads",
     "map.height": 60,
@@ -15,9 +27,13 @@
     "map.tileHeight": 16,
     "map.tileWidth": 16,
     "openFiles": [
+        "nature1.tmx",
+        "natural.tsx"
     ],
     "project": "nature1.tiled-project",
     "recentFiles": [
+        "natural.tsx",
+        "nature1.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {

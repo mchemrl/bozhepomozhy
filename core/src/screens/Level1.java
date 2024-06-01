@@ -35,7 +35,7 @@ public class Level1 implements Screen {
         camera = new OrthographicCamera();
 
         player = new Player(new Sprite(new Texture("img/player.png")), (TiledMapTileLayer) map.getLayers().get(0));
-        player.setPosition(player.getX()+22*16, player.getY()+5*16);
+        player.setPosition(player.getX()+39*16, player.getY()+3*16);
 
         crab = new Enemy(new Sprite(new Texture("img/enemies/CrabMoving1.png")));
         crab.setPosition(map.getProperties().get("width", Integer.class)*6-40, 8*16);
