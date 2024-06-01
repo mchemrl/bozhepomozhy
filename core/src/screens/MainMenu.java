@@ -6,6 +6,7 @@ import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -31,7 +32,7 @@ public class MainMenu implements Screen {
     private TweenManager tweenManager;
     private Sound buttonClickSound;
     private Sound buttonHoverSound;
-
+private Music coolMusic;
     @Override
     public void show() {
         stage = new Stage();
@@ -48,10 +49,14 @@ public class MainMenu implements Screen {
 
         buttomExit = new TextButton("EXIT", skin);
         buttomExit.getLabel().setFontScale(2.0f);
+
+        coolMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/rick.wav"));
         buttomExit.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 buttonClickSound.play();
+                coolMusic.play();
+                coolMusic.setVolume(2);
                 Gdx.app.exit();
             }
         });
@@ -77,7 +82,7 @@ public class MainMenu implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 buttonClickSound.play();
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new Levels());
+                coolMusic.play();
             }
         });
         buttonPlay.addListener(new InputListener() {
@@ -96,24 +101,21 @@ public class MainMenu implements Screen {
 
         buttonPlay.pad(20);
 
-        heading = new Label("Main Menu", skin);
+        heading = new Label("GET RICK ROLLED", skin);
         heading.setFontScale(3);
 
         table.add(heading).spaceBottom(50).row();
         table.add(buttonPlay).spaceBottom(10).row();
         table.add(buttomExit);
-        //table.debug();//remove later
         stage.addActor(table);
 
         tweenManager = new TweenManager();
         Tween.registerAccessor(Actor.class, new ActorAccessor());
-        //heading color change
         Timeline.createSequence().beginSequence()
                 .push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(0, 0, 0))
                 .push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(1, .65f, 1))
                 .push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(1, 1, 1))
                 .end().repeat(Tween.INFINITY, 0).start(tweenManager);
-        //heading and buttons fade-in
         Timeline.createSequence().beginSequence()
                 .push(Tween.set(buttonPlay, ActorAccessor.ALPHA).target(0))
                 .push(Tween.set(buttomExit, ActorAccessor.ALPHA).target(0))
@@ -122,7 +124,6 @@ public class MainMenu implements Screen {
                 .push(Tween.to(heading, ActorAccessor.ALPHA, 1).target(1))
                 .end().start(tweenManager);
 
-        //table fade-in
         Tween.from(table, ActorAccessor.ALPHA, 0.5f).target(0).start(tweenManager);
         Tween.from(table, ActorAccessor.Y, 0.5f).target(Gdx.graphics.getHeight()/8).start(tweenManager);
     }

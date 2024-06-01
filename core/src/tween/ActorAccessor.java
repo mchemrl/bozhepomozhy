@@ -30,8 +30,7 @@ public class ActorAccessor implements TweenAccessor<Actor> {
         switch (i){
             case Y:
                 actor.setY(floats[0]);
-                break;
-            case RGB:
+                break;          case RGB:
                 actor.setColor(floats[0], floats[1], floats[2], actor.getColor().a);
                 break;
             case ALPHA:
