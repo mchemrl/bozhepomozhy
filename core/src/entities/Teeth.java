@@ -12,9 +12,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 
 
-public class Enemy extends Sprite {
+public class Teeth extends Sprite {
     private TiledMapTileLayer collisionLayer;
     private TweenManager tweenManager;
     private Vector2 velocity = new Vector2();
@@ -22,47 +23,48 @@ public class Enemy extends Sprite {
     // Animation variables
     private Animation<TextureRegion> animation;
     private float stateTime;
-    public Enemy(Sprite sprite) {
+    public boolean isDeadly;
+
+    public Teeth(Sprite sprite) {
         super(sprite);
         animate();
     }
-
-
-
-        public void animate(){
-        TextureRegion[] frames = new TextureRegion[4];
-        frames[0] = new TextureRegion(new Texture(Gdx.files.internal("img/enemies/CrabMoving1.png")));
-        frames[1] = new TextureRegion(new Texture(Gdx.files.internal("img/enemies/CrabMoving2.png")));
-        frames[2] = new TextureRegion(new Texture(Gdx.files.internal("img/enemies/CrabMoving3.png")));
-        frames[3] = new TextureRegion(new Texture(Gdx.files.internal("img/enemies/CrabMoving4.png")));
-
-
-        animation = new Animation<TextureRegion>(0.1f, frames);
+    public void animate(){
+        TextureRegion[] frames = new TextureRegion[6];
+        frames[0] = new TextureRegion(new Texture(Gdx.files.internal("img/enemies/teeth1.png")));
+        frames[1] = new TextureRegion(new Texture(Gdx.files.internal("img/enemies/teeth2.png")));
+        frames[2] = new TextureRegion(new Texture(Gdx.files.internal("img/enemies/teeth3.png")));
+        frames[3] = new TextureRegion(new Texture(Gdx.files.internal("img/enemies/teeth4.png")));
+        frames[4] = new TextureRegion(new Texture(Gdx.files.internal("img/enemies/teeth3.png")));
+        frames[5] = new TextureRegion(new Texture(Gdx.files.internal("img/enemies/teeth2.png")));
+        animation = new Animation<TextureRegion>(0.3f, frames);
         stateTime = 0f;
     }
 
     public void draw(Batch batch) {
-        update(Gdx.graphics.getDeltaTime());
+        //update(Gdx.graphics.getDeltaTime());
         stateTime += Gdx.graphics.getDeltaTime();
 
         // Get the current frame of animation for the current stateTime
         TextureRegion currentFrame = animation.getKeyFrame(stateTime, true);
+        isDeadly = currentFrame.getTexture().toString().equals("img/enemies/teeth4.png");
 
         // Draw the current frame
         batch.draw(currentFrame, getX(), getY(), getWidth(), getHeight());
     }
 
-    private void update(float deltaTime) {
-        velocity.y -= gravity * deltaTime;
-        if(velocity.y > speed){
-            velocity.y = speed;
-        }else if(velocity.y < -speed){
-            velocity.y = -speed;
-        }
-        setX(getX() + velocity.x * deltaTime);
-        setY(getY() + velocity.y * deltaTime);
+//    private void update(float deltaTime) {
+//        velocity.y -= gravity * deltaTime;
+//        if(velocity.y > speed){
+//            velocity.y = speed;
+//        }else if(velocity.y < -speed){
+//            velocity.y = -speed;
+//        }
+//        setX(getX() + velocity.x * deltaTime);
+//        setY(getY() + velocity.y * deltaTime);
+//
+//    }
 
-    }
 
 
     public void move(int direction){

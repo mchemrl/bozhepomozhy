@@ -15,6 +15,7 @@ public class Player extends Sprite implements InputProcessor {
     private float moveTime = 0.2f;
     private float timeSiceLastMove = 0;
     private TiledMapTileLayer collisionLayer;
+    public boolean isCaught;
 
     public Player(Sprite sprite, TiledMapTileLayer collisionLayer) {
         super(sprite);
