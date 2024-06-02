@@ -6,6 +6,7 @@ import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -31,6 +32,7 @@ public class MainMenu implements Screen {
     private TweenManager tweenManager;
     private Sound buttonClickSound;
     private Sound buttonHoverSound;
+    public static Music menuMusic;
 
     @Override
     public void show() {
@@ -42,6 +44,11 @@ public class MainMenu implements Screen {
 
         table = new Table(skin);
         table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        menuMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/menumusic.wav"));
+        menuMusic.play();
+        menuMusic.setLooping(true);
+        menuMusic.setVolume(1);
 
         buttonClickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/buttonclicked.ogg"));
         buttonHoverSound = Gdx.audio.newSound(Gdx.files.internal("sounds/buttonhover.ogg"));

@@ -59,6 +59,7 @@ public class Levels implements Screen {
         level1Button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                MainMenu.menuMusic.stop();
                 buttonClickSound.play();
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new Level1());
             }
@@ -68,6 +69,7 @@ public class Levels implements Screen {
         level2Button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                MainMenu.menuMusic.stop();
                 buttonClickSound.play();
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new Level2());
             }
@@ -77,6 +79,7 @@ public class Levels implements Screen {
         level3Button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                MainMenu.menuMusic.stop();
                 buttonClickSound.play();
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new Level3());
             }

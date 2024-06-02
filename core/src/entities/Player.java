@@ -71,6 +71,9 @@ public class Player extends Sprite implements InputProcessor {
         }
     }
     //TODO when the player is moving you can't press any other keys
+    //TODO change scale when player hits collision
+    //TODO player animation. moving animation
+    //TODO add collectables
     @Override
     public boolean keyDown(int keycode) {
         switch (keycode){
@@ -79,7 +82,6 @@ public class Player extends Sprite implements InputProcessor {
                 break;
             case Keys.A:
                 velocity.x = -speed;
-                checkCollision();
                 break;
             case Keys.S:
                 velocity.y = -speed;
@@ -90,45 +92,6 @@ public class Player extends Sprite implements InputProcessor {
         }
         return true;
     }
-    private boolean isTileBlocked(float x, float y) {
-        TiledMapTileLayer.Cell cell = collisionLayer.getCell((int) (x / collisionLayer.getTileWidth()), (int) (y / collisionLayer.getTileHeight()));
-        return cell != null && cell.getTile().getProperties().containsKey("blocked");
-    }
-
-    private void checkCollision() {
-        float tileWidth = collisionLayer.getTileWidth();
-        float tileHeight = collisionLayer.getTileHeight();
-
-        // Check the tile that is right next to the player
-        boolean nextRightTileBlocked = collisionLayer.getCell((int) ((getX() + getWidth() + 8) / tileWidth), (int) ((getY() + getHeight() / 2) / tileHeight)).getTile().getProperties().containsKey("blocked");
-        boolean nextLeftTileBlocked = collisionLayer.getCell((int) ((getX() - 8) / tileWidth), (int) ((getY() + getHeight() / 2) / tileHeight)).getTile().getProperties().containsKey("blocked");
-
-        // If the next right tile is not blocked, move the player one pixel to the right
-        if (!nextRightTileBlocked) {
-            for (int i = 0; i < 8; i++) {
-                nextRightTileBlocked = collisionLayer.getCell((int) ((getX() + getWidth() + 1) / tileWidth), (int) ((getY() + getHeight() / 2) / tileHeight)).getTile().getProperties().containsKey("blocked");
-                setX(getX() + 1);
-                if (nextRightTileBlocked) {
-                    break;
-                }
-            }
-        }
-
-        // If the next left tile is not blocked, move the player one pixel to the left
-        if (!nextLeftTileBlocked) {
-            for (int i = 0; i < 8; i++) {
-                nextLeftTileBlocked = collisionLayer.getCell((int) ((getX() - 1) / tileWidth), (int) ((getY() + getHeight() / 2) / tileHeight)).getTile().getProperties().containsKey("blocked");
-                setX(getX() - 1);
-                if (nextLeftTileBlocked) {
-                    break;
-                }
-            }
-        }
-    }
-    private float lerp(float point1, float point2, float alpha) {
-        return point1 + alpha * (point2 - point1);
-    }
-
     @Override
     public boolean keyUp(int keycode) {
         return true;
