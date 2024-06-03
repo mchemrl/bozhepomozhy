@@ -23,6 +23,8 @@ public class ArcadeScreen implements Screen {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
+        if(Settings.musicDisabled) MainMenu.menuMusic.stop();
+
         atlas = new TextureAtlas("ui/levels/buttons.txt");
         skin = new Skin(Gdx.files.internal("ui/levels/levelsSkin.json"), atlas);
         arcadeButton = new TextButton("Arcade", skin, "levelbutton");

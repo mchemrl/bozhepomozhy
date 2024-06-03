@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import extensions.Loader;
 import tween.ActorAccessor;
 
 import java.sql.Time;
@@ -36,6 +37,11 @@ public class MainMenu implements Screen {
 
     @Override
     public void show() {
+
+        Loader loader = new Loader();
+        Settings.musicDisabled = loader.loadMusicSettings();
+        Settings.soundDisabled = loader.loadSoundSettings();
+
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
@@ -46,9 +52,11 @@ public class MainMenu implements Screen {
         table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         menuMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/menumusic.wav"));
-        menuMusic.play();
-        menuMusic.setLooping(true);
-        menuMusic.setVolume(1);
+        if (!Settings.musicDisabled) {
+            menuMusic.play();
+            menuMusic.setLooping(true);
+            menuMusic.setVolume(1);
+        }
 
         buttonClickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/buttonclicked.ogg"));
         buttonHoverSound = Gdx.audio.newSound(Gdx.files.internal("sounds/buttonhover.ogg"));
@@ -58,20 +66,20 @@ public class MainMenu implements Screen {
         buttomExit.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                buttonClickSound.play();
+                if(!Settings.soundDisabled) buttonClickSound.play();
                 Gdx.app.exit();
             }
         });
         buttomExit.addListener(new InputListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                buttonHoverSound.play();
+                if(!Settings.soundDisabled) buttonHoverSound.play();
                 buttomExit.getLabel().setFontScale(2.2f);
             }
 
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                buttonHoverSound.play();
+                if(!Settings.soundDisabled) buttonHoverSound.play();
                 buttomExit.getLabel().setFontScale(2.0f);
             }
         });
@@ -83,20 +91,20 @@ public class MainMenu implements Screen {
         buttonPlay.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                buttonClickSound.play();
+                if(!Settings.soundDisabled) buttonClickSound.play();
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new Levels());
             }
         });
         buttonPlay.addListener(new InputListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                buttonHoverSound.play();
+                if(!Settings.soundDisabled) buttonHoverSound.play();
                 buttonPlay.getLabel().setFontScale(2.2f);
             }
 
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                buttonHoverSound.play();
+                if(!Settings.soundDisabled) buttonHoverSound.play();
                 buttonPlay.getLabel().setFontScale(1.8f);
             }
         });
@@ -131,8 +139,9 @@ public class MainMenu implements Screen {
 
         //table fade-in
         Tween.from(table, ActorAccessor.ALPHA, 0.5f).target(0).start(tweenManager);
-        Tween.from(table, ActorAccessor.Y, 0.5f).target(Gdx.graphics.getHeight()/8).start(tweenManager);
+        Tween.from(table, ActorAccessor.Y, 0.5f).target(Gdx.graphics.getHeight() / 8).start(tweenManager);
     }
+
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);

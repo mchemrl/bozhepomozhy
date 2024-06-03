@@ -30,7 +30,7 @@ public class Levels implements Screen {
     private Skin skin;
     private TextureAtlas atlas;
     private TweenManager tweenManager;
-    private Sound buttonClickSound;
+    public static Sound buttonClickSound;
     private boolean level1Passed;
     private boolean level2Passed;
     private BottomMenu bottomMenu;
@@ -60,7 +60,7 @@ public class Levels implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 MainMenu.menuMusic.stop();
-                buttonClickSound.play();
+                if(!Settings.soundDisabled) buttonClickSound.play();
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new Level1());
             }
         });
@@ -69,8 +69,8 @@ public class Levels implements Screen {
         level2Button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                if(!Settings.soundDisabled) buttonClickSound.play();
                 MainMenu.menuMusic.stop();
-                buttonClickSound.play();
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new Level2());
             }
         });
@@ -79,8 +79,8 @@ public class Levels implements Screen {
         level3Button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                if(!Settings.soundDisabled) buttonClickSound.play();
                 MainMenu.menuMusic.stop();
-                buttonClickSound.play();
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new Level3());
             }
         });
@@ -89,7 +89,7 @@ public class Levels implements Screen {
         settingButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                buttonClickSound.play();
+                if(!Settings.soundDisabled) buttonClickSound.play();
                 String previousScreen = "levels";
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new Settings(skin, previousScreen));
             }
@@ -109,6 +109,8 @@ public class Levels implements Screen {
                     // Add your logic here
                 }
         );
+
+        if(Settings.musicDisabled) MainMenu.menuMusic.stop();
 
         table.add(heading1).colspan(3).spaceBottom(10).row();
         table.add(heading2).colspan(3).spaceBottom(30).row();

@@ -16,14 +16,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import extensions.Loader;
+import extensions.Saver;
 
 public class Settings implements Screen {
     private Stage stage;
     private Skin skin;
     private Sound buttonClickSound;
     private String previousScreen;
-    boolean musicDisabled = false;
-    boolean soundDisabled = false;
+    public static boolean musicDisabled = false;
+    public static boolean soundDisabled = false;
 
     public Settings(Skin skin, String previousScreen) {
         this.skin = skin;
@@ -34,13 +36,16 @@ public class Settings implements Screen {
 
     @Override
     public void show() {
-
         TextButton soundButton = new TextButton("Sound", skin);
         TextButton musicButton = new TextButton("Music", skin);
 
         // Анімація для тексту кнопок
+        if(!soundDisabled)
         animateButtonText(soundButton, 3);
+
+        if(!musicDisabled)
         animateButtonText(musicButton, 3);
+
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
@@ -56,10 +61,15 @@ public class Settings implements Screen {
                 if (!soundDisabled) {
                     soundButton.clearActions();
                     soundDisabled = true;
+                    //Levels.buttonClickSound.setVolume(0,0);
+                    //buttonClickSound.setVolume(0,0);
                 }else{
                     animateButtonText(soundButton, 3);
                     soundDisabled = false;
+                    //Levels.buttonClickSound.setVolume(1,1);
+                   // buttonClickSound.setVolume(0,1);
                 }
+                Saver.saveSettings(musicDisabled, soundDisabled);
             }
         });
 
@@ -70,17 +80,20 @@ public class Settings implements Screen {
                 if (!musicDisabled) {
                     musicButton.clearActions();
                     musicDisabled = true;
+                    MainMenu.menuMusic.stop();
                 }else{
                     animateButtonText(musicButton, 3);
                     musicDisabled = false;
+                    MainMenu.menuMusic.play();
                 }
+                Saver.saveSettings(musicDisabled, soundDisabled);
             }
         });
 
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                buttonClickSound.play();
+                if(!soundDisabled) buttonClickSound.play();
                 if (previousScreen.equals("shop")){
                     ((Game) Gdx.app.getApplicationListener()).setScreen(new ShopScreen());
                 }else if(previousScreen.equals("levels")){
