@@ -40,7 +40,7 @@ public class Level2 implements Screen {
         renderer = new OrthogonalTiledMapRenderer(map);
         camera = new OrthographicCamera();
 
-        player = new Player(new Sprite(new Texture("img/player.png")), (TiledMapTileLayer) map.getLayers().get(0));
+        player = new Player(new Sprite(new Texture("img/player.png")), (TiledMapTileLayer) map.getLayers().get(1));
         player.setPosition(player.getX() + 40 * 16, player.getY() + 18 * 16);
 
         //crab = new Enemy(new Sprite(new Texture("img/enemies/CrabMoving1.png")));
