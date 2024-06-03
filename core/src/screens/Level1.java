@@ -21,16 +21,15 @@ public class Level1 implements Screen {
     private Player player;
 
     private Enemy crab;
-    private Teeth teeth;
-    public static Music mapMusic;
-
+    private Music mapMusic;
     @Override
     public void show() {
         mapMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/deathbyglamour.wav"));
 
+        if(!Settings.musicDisabled){
         mapMusic.setVolume(0.15f);
         mapMusic.play();
-        mapMusic.setLooping(true);
+        mapMusic.setLooping(true);}
 
         map = new TmxMapLoader().load("maps/nature1.tmx");
         renderer = new OrthogonalTiledMapRenderer(map);
@@ -39,11 +38,8 @@ public class Level1 implements Screen {
         player = new Player(new Sprite(new Texture("img/player.png")), (TiledMapTileLayer) map.getLayers().get(0));
         player.setPosition(player.getX()+40*16, player.getY()+18*16);
 
-//        crab = new Enemy(new Sprite(new Texture("img/enemies/CrabMoving1.png")));
-//        crab.setPosition(map.getProperties().get("width", Integer.class)*6-40, 8*16);
-
-        teeth = new Teeth(new Sprite(new Texture("img/enemies/teeth1.png")));
-        teeth.setPosition(26 * 16, 22.5f * 16);
+        crab = new Enemy(new Sprite(new Texture("img/enemies/CrabMoving1.png")));
+        crab.setPosition(map.getProperties().get("width", Integer.class)*6-40, 8*16);
 
         Gdx.input.setInputProcessor(player);
     }
@@ -61,14 +57,7 @@ public class Level1 implements Screen {
         renderer.getBatch().begin();
         player.draw(renderer.getBatch());
 
-
-        if (teeth.getBoundingRectangle().overlaps(player.getBoundingRectangle())) {
-            if (teeth.isDeadly) {
-                System.out.println("You died");
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new Levels());
-            }
-        }
-        teeth.draw(renderer.getBatch());
+        crab.draw(renderer.getBatch());
         renderer.getBatch().end();
     }
 
@@ -100,8 +89,6 @@ public class Level1 implements Screen {
         renderer.dispose();
         player.getTexture().dispose();
 
-        //  crab.getTexture().dispose();
-        teeth.getTexture().dispose();
-        mapMusic.dispose();
+        crab.getTexture().dispose();
     }
 }
