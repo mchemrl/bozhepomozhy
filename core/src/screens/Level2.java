@@ -29,7 +29,7 @@ public class Level2 implements Screen {
 
     @Override
     public void show() {
-        levelMaker = new LevelMaker("maps/nature1.tmx", 40*LevelMaker.SIZE, 18*LevelMaker.SIZE, 607, 719);
+        levelMaker = new LevelMaker("maps/nature1.tmx", 40*LevelMaker.SIZE, 18*LevelMaker.SIZE, 575, 591);
 
         mapMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/bonetrousle.wav"));
         levelMaker.setMusic(mapMusic);
@@ -75,6 +75,8 @@ public class Level2 implements Screen {
         //crab.draw(renderer.getBatch());
         teeth.draw(renderer.getBatch());
         renderer.getBatch().end();
+        levelMaker.checkWinCondition(player);
+
     }
 
     @Override

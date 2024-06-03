@@ -11,6 +11,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import entities.Player;
 import screens.Levels;
 import screens.Settings;
+import screens.WinScreen;
 
 public class LevelMaker {
     private TiledMap map;
@@ -53,6 +54,6 @@ public class LevelMaker {
 
     public void checkWinCondition(Player player) {
         if (player.getX() == winCoordinateX && player.getY() == winCoordinateY)
-            ((Game) Gdx.app.getApplicationListener()).setScreen(new Levels());
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new WinScreen());
     }
 }
