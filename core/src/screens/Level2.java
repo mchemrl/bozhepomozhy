@@ -15,6 +15,7 @@ import entities.Enemy;
 import entities.Player;
 import com.badlogic.gdx.audio.Music;
 import entities.Teeth;
+import extensions.LevelMaker;
 
 public class Level2 implements Screen {
     private TiledMap map;
@@ -24,14 +25,16 @@ public class Level2 implements Screen {
     private Enemy crab;
     private Teeth teeth;
     private Music mapMusic;
+    private LevelMaker levelMaker;
 
     @Override
     public void show() {
-        mapMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/deathbyglamour.wav"));
+        levelMaker = new LevelMaker("maps/nature1.tmx", 40*LevelMaker.SIZE, 18*LevelMaker.SIZE, 607, 719);
 
-        mapMusic.setVolume(0.15f);
-        mapMusic.play();
-        mapMusic.setLooping(true);
+        mapMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/bonetrousle.wav"));
+        levelMaker.setMusic(mapMusic);
+
+        levelMaker.loadMap();
 
         map = new TmxMapLoader().load("maps/level2.tmx");
         renderer = new OrthogonalTiledMapRenderer(map);
