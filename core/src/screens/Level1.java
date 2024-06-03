@@ -20,29 +20,24 @@ public class Level1 implements Screen {
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
     private Player player;
-private final int SIZE = 16;
     private Enemy crab;
     private Music mapMusic;
     private LevelMaker levelMaker;
     @Override
     public void show() {
-        levelMaker = new LevelMaker();
+        levelMaker = new LevelMaker("maps/nature1.tmx", 40*LevelMaker.SIZE, 18*LevelMaker.SIZE, 607, 719);
+
         mapMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/deathbyglamour.wav"));
+        levelMaker.setMusic(mapMusic);
 
-        if(!Settings.musicDisabled){
-        mapMusic.setVolume(0.15f);
-        mapMusic.play();
-        mapMusic.setLooping(true);}
-
-        map = new TmxMapLoader().load("maps/nature1.tmx");
+        map = levelMaker.loadMap();
         renderer = new OrthogonalTiledMapRenderer(map);
         camera = new OrthographicCamera();
 
-        player = new Player(new Sprite(new Texture("img/player.png")), (TiledMapTileLayer) map.getLayers().get(0));
-        player.setPosition(player.getX()+40*SIZE, player.getY()+18*SIZE);
+        player = levelMaker.createPlayer((TiledMapTileLayer) map.getLayers().get(0));
 
         crab = new Enemy(new Sprite(new Texture("img/enemies/CrabMoving1.png")), (TiledMapTileLayer) map.getLayers().get(0), 40, 0);
-        crab.setPosition(crab.getX()+27*SIZE, crab.getY() + SIZE*21);
+        crab.setPosition(crab.getX()+27*LevelMaker.SIZE, crab.getY() + LevelMaker.SIZE*21);
 
         Gdx.input.setInputProcessor(player);
     }
@@ -65,7 +60,7 @@ private final int SIZE = 16;
         crab.draw(renderer.getBatch());
         renderer.getBatch().end();
 
-        levelMaker.win(player, 607, 719);
+        levelMaker.checkWinCondition(player);
         System.out.println(player.getX());
         System.out.println(player.getY());
     }
@@ -97,9 +92,6 @@ private final int SIZE = 16;
         map.dispose();
         renderer.dispose();
         player.getTexture().dispose();
-
         crab.getTexture().dispose();
     }
-
-
 }
