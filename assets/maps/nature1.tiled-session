@@ -9,15 +9,15 @@
     "file.lastUsedOpenFilter": "Всі файли (*)",
     "fileStates": {
         "natural.tsx": {
-            "scaleInDock": 2,
+            "scaleInDock": 4,
             "scaleInEditor": 4
         },
         "nature1.tmx": {
-            "scale": 3,
+            "scale": 1,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 665.1666666666666,
-                "y": 823.6666666666666
+                "x": 520.5,
+                "y": 811
             }
         }
     },

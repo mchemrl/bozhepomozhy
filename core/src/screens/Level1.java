@@ -19,7 +19,7 @@ public class Level1 implements Screen {
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
     private Player player;
-
+private final int SIZE = 16;
     private Enemy crab;
     private Music mapMusic;
     @Override
@@ -36,10 +36,10 @@ public class Level1 implements Screen {
         camera = new OrthographicCamera();
 
         player = new Player(new Sprite(new Texture("img/player.png")), (TiledMapTileLayer) map.getLayers().get(0));
-        player.setPosition(player.getX()+40*16, player.getY()+18*16);
+        player.setPosition(player.getX()+40*SIZE, player.getY()+18*SIZE);
 
-        crab = new Enemy(new Sprite(new Texture("img/enemies/CrabMoving1.png")));
-        crab.setPosition(map.getProperties().get("width", Integer.class)*6-40, 8*16);
+        crab = new Enemy(new Sprite(new Texture("img/enemies/CrabMoving1.png")), (TiledMapTileLayer) map.getLayers().get(0), 120, 0);
+        crab.setPosition(crab.getX()+27*SIZE, crab.getY() + SIZE*21);
 
         Gdx.input.setInputProcessor(player);
     }
@@ -51,6 +51,8 @@ public class Level1 implements Screen {
 
         camera.position.set(player.getX() + player.getWidth()/2, player.getY() + player.getWidth()/2, 0);
         camera.update();
+
+        crab.update(delta);
 
         renderer.setView(camera);
         renderer.render();

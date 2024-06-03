@@ -40,8 +40,8 @@ public class Level2 implements Screen {
         player = new Player(new Sprite(new Texture("img/player.png")), (TiledMapTileLayer) map.getLayers().get(0));
         player.setPosition(player.getX() + 40 * 16, player.getY() + 18 * 16);
 
-        crab = new Enemy(new Sprite(new Texture("img/enemies/CrabMoving1.png")));
-        crab.setPosition(map.getProperties().get("width", Integer.class)*6-40, 8*16);
+        //crab = new Enemy(new Sprite(new Texture("img/enemies/CrabMoving1.png")));
+        //crab.setPosition(map.getProperties().get("width", Integer.class)*6-40, 8*16);
 
         teeth = new Teeth(new Sprite(new Texture("img/enemies/teeth1.png")));
         teeth.setPosition(26 * 16, 22.5f * 16);
@@ -69,7 +69,7 @@ public class Level2 implements Screen {
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new Levels());
             }
         }
-        crab.draw(renderer.getBatch());
+        //crab.draw(renderer.getBatch());
         teeth.draw(renderer.getBatch());
         renderer.getBatch().end();
     }
@@ -102,7 +102,7 @@ public class Level2 implements Screen {
         renderer.dispose();
         player.getTexture().dispose();
 
-        crab.getTexture().dispose();
+        //crab.getTexture().dispose();
         teeth.getTexture().dispose();
         mapMusic.dispose();
     }
