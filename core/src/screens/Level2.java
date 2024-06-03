@@ -33,7 +33,7 @@ public class Level2 implements Screen {
         mapMusic.play();
         mapMusic.setLooping(true);
 
-        map = new TmxMapLoader().load("maps/nature1.tmx");
+        map = new TmxMapLoader().load("maps/level2.tmx");
         renderer = new OrthogonalTiledMapRenderer(map);
         camera = new OrthographicCamera();
 
