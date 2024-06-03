@@ -3,12 +3,28 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "nature1.tmx",
+    "activeFile": "C:/Users/mcche/Downloads/Telegram Desktop/level2.tmx",
     "expandedProjectPaths": [
     ],
     "file.lastUsedOpenFilter": "Всі файли (*)",
     "fileStates": {
+        "C:/Users/mcche/Downloads/Telegram Desktop/level2.tmx": {
+            "scale": 0.38158333333333333,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 609.3033413409041,
+                "y": 601.441362742957
+            }
+        },
+        "C:/Users/mcche/Downloads/Telegram Desktop/natural2.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mcche/Downloads/Документи/GitHub/bozhepomozhy/assets/maps/natural.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1
+        },
         "natural.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 4,
             "scaleInEditor": 4
         },
@@ -16,8 +32,8 @@
             "scale": 1,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 520.5,
-                "y": 811
+                "x": 519.5,
+                "y": 739
             }
         }
     },
@@ -28,12 +44,14 @@
     "map.tileWidth": 16,
     "openFiles": [
         "nature1.tmx",
-        "natural.tsx"
+        "natural.tsx",
+        "C:/Users/mcche/Downloads/Telegram Desktop/level2.tmx"
     ],
     "project": "nature1.tiled-project",
     "recentFiles": [
+        "nature1.tmx",
         "natural.tsx",
-        "nature1.tmx"
+        "C:/Users/mcche/Downloads/Telegram Desktop/level2.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {

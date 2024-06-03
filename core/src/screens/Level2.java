@@ -27,7 +27,7 @@ public class Level2 implements Screen {
 
     @Override
     public void show() {
-        mapMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/deathbyglamour.wav"));
+        mapMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/bonetrousle.wav"));
 
         mapMusic.setVolume(0.15f);
         mapMusic.play();
