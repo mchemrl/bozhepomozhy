@@ -41,7 +41,6 @@ public class Level1 implements Screen {
 
         Gdx.input.setInputProcessor(player);
     }
-
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0.431f, 0.8f, 0.788f, 1); //pretty blue colour

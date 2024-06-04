@@ -3,6 +3,7 @@ package screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -26,9 +27,11 @@ public class Level2 implements Screen {
     private Teeth teeth;
     private Music mapMusic;
     private LevelMaker levelMaker;
+    private Sound deathSound;
 
     @Override
     public void show() {
+        deathSound = Gdx.audio.newSound(Gdx.files.internal("sounds/death.ogg"));
         levelMaker = new LevelMaker("maps/nature1.tmx", 40*LevelMaker.SIZE, 18*LevelMaker.SIZE, 575, 591);
 
         mapMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/bonetrousle.wav"));
@@ -69,6 +72,7 @@ public class Level2 implements Screen {
         if (teeth.getBoundingRectangle().overlaps(player.getBoundingRectangle())) {
             if (teeth.isDeadly) {
                 System.out.println("You died");
+                deathSound.play();
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new Levels());
             }
         }
