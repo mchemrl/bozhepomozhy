@@ -60,6 +60,7 @@ public class Teeth extends Enemy {
         return isDeadly;
     }
 
+
     @Override
     public Rectangle getBoundingRectangle() {
         return new Rectangle(getX(), getY(), getWidth(), getHeight());
