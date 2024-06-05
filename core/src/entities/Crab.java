@@ -20,10 +20,11 @@ public class Crab extends Enemy {
     private TiledMapTileLayer collisionLayer;
     private TweenManager tweenManager;
     private Vector2 velocity = new Vector2();
-    private float speed = 60*2;
+    private float speed = 60 * 2;
     // Animation variables
     private Animation<TextureRegion> animation;
     private float stateTime;
+    private float counter = 0;
 
     public Crab(Sprite sprite, TiledMapTileLayer collisionLayer, int velocityX, int velocityY) {
         super(sprite);
@@ -38,12 +39,13 @@ public class Crab extends Enemy {
     public boolean isDeadly() {
         return true;
     }
+
     @Override
     public Rectangle getBoundingRectangle() {
         return new Rectangle(getX(), getY(), getWidth(), getHeight());
     }
 
-    public void animate(){
+    public void animate() {
         TextureRegion[] frames = new TextureRegion[4];
         frames[0] = new TextureRegion(new Texture(Gdx.files.internal("img/enemies/CrabMoving1.png")));
         frames[1] = new TextureRegion(new Texture(Gdx.files.internal("img/enemies/CrabMoving2.png")));
@@ -72,7 +74,8 @@ public class Crab extends Enemy {
         float oldX = getX();
         float oldY = getY();
         float tileWidth = collisionLayer.getTileWidth(), tileHeight = collisionLayer.getTileHeight();
-
+        float speedX = velocity.x;
+        float speedY = velocity.y;
         setX(getX() + velocity.x * deltaTime);
         setY(getY() + velocity.y * deltaTime);
 
@@ -102,10 +105,10 @@ public class Crab extends Enemy {
     }
 
 
-    public void move(int direction){
-        if(direction == 1){
+    public void move(int direction) {
+        if (direction == 1) {
             setX(getX() - 1);
-        }else if(direction == 2){
+        } else if (direction == 2) {
             setX(getX() + 1);
         }
 

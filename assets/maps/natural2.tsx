@@ -36,6 +36,12 @@
    <property name="blocked" value=""/>
   </properties>
  </tile>
+ <tile id="11">
+  <properties>
+   <property name="blocked" value=""/>
+   <property name="deadly" value=""/>
+  </properties>
+ </tile>
  <tile id="12">
   <properties>
    <property name="blocked" value=""/>

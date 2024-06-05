@@ -51,20 +51,20 @@ public class Level2 implements Screen {
         player = new Player(new Sprite(new Texture("img/player.png")), (TiledMapTileLayer) map.getLayers().get(1));
         player.setPosition(player.getX() + 40 * 16, player.getY() + 18 * 16);
 
-        crab = new Crab(new Sprite(new Texture("img/enemies/CrabMoving1.png")), (TiledMapTileLayer) map.getLayers().get(1), 0, 40);
-        crab.setPosition(36.5f*16,17*16);
+        crab = new Crab(new Sprite(new Texture("img/enemies/CrabMoving1.png")), (TiledMapTileLayer) map.getLayers().get(1), 0, 30);
+        crab.setPosition(36*16,17*16);
         enemies.add(crab);
-        crab2 = new Crab(new Sprite(new Texture("img/enemies/CrabMoving1.png")), (TiledMapTileLayer) map.getLayers().get(1), 0, 10);
+        crab2 = new Crab(new Sprite(new Texture("img/enemies/CrabMoving1.png")), (TiledMapTileLayer) map.getLayers().get(1), 0, 30);
         crab2.setPosition(39*16,27*16);
         enemies.add(crab2);
         crab3 = new Crab(new Sprite(new Texture("img/enemies/CrabMoving1.png")), (TiledMapTileLayer) map.getLayers().get(1), 0, 30);
         crab3.setPosition(43*16,30*16);
         enemies.add(crab3);
-        crab4 = new Crab(new Sprite(new Texture("img/enemies/CrabMoving1.png")), (TiledMapTileLayer) map.getLayers().get(1), 40, 0);
+        crab4 = new Crab(new Sprite(new Texture("img/enemies/CrabMoving1.png")), (TiledMapTileLayer) map.getLayers().get(1), 30, 0);
         crab4.setPosition(22*16,28*16);
         enemies.add(crab4);
-        crab5 = new Crab(new Sprite(new Texture("img/enemies/CrabMoving1.png")), (TiledMapTileLayer) map.getLayers().get(1), 0, 35);
-        crab5.setPosition(23*16,37.75f*16);
+        crab5 = new Crab(new Sprite(new Texture("img/enemies/CrabMoving1.png")), (TiledMapTileLayer) map.getLayers().get(1), 30, 0);
+        crab5.setPosition(23*16,38.5f*16);
         enemies.add(crab5);
 
         Gdx.input.setInputProcessor(player);
@@ -94,6 +94,10 @@ public class Level2 implements Screen {
                     ((Game) Gdx.app.getApplicationListener()).setScreen(new Levels());
                 }
             }
+        }
+        if (player.isCaught){
+            System.out.println("You died");
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new Levels());
         }
         //crab.draw(renderer.getBatch());
         for (Enemy enemy : enemies) {
