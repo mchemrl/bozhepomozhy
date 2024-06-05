@@ -11,7 +11,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import org.w3c.dom.css.Rect;
 
 
 public class Crab extends Enemy {
@@ -36,6 +38,11 @@ public class Crab extends Enemy {
     public boolean isDeadly() {
         return true;
     }
+    @Override
+    public Rectangle getBoundingRectangle() {
+        return new Rectangle(getX(), getY(), getWidth(), getHeight());
+    }
+
     public void animate(){
         TextureRegion[] frames = new TextureRegion[4];
         frames[0] = new TextureRegion(new Texture(Gdx.files.internal("img/enemies/CrabMoving1.png")));
