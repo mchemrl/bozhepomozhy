@@ -1,5 +1,6 @@
 package screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -10,19 +11,24 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import entities.Crab;
 import entities.Enemy;
 import entities.Player;
 import com.badlogic.gdx.audio.Music;
 import extensions.LevelMaker;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Level1 implements Screen {
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
     private Player player;
-    private Enemy crab;
+    private Crab crab;
     private Music mapMusic;
     private LevelMaker levelMaker;
+    List<Enemy> enemies = new ArrayList<>();
     @Override
     public void show() {
         levelMaker = new LevelMaker("maps/nature1.tmx", 40*LevelMaker.SIZE, 18*LevelMaker.SIZE, 607, 719);
@@ -36,8 +42,9 @@ public class Level1 implements Screen {
 
         player = levelMaker.createPlayer((TiledMapTileLayer) map.getLayers().get(0));
 
-        crab = new Enemy(new Sprite(new Texture("img/enemies/CrabMoving1.png")), (TiledMapTileLayer) map.getLayers().get(0), 40, 0);
+        crab = new Crab(new Sprite(new Texture("img/enemies/CrabMoving1.png")), (TiledMapTileLayer) map.getLayers().get(0), 40, 0);
         crab.setPosition(crab.getX()+27*LevelMaker.SIZE, crab.getY() + LevelMaker.SIZE*21);
+        enemies.add(crab);
 
         Gdx.input.setInputProcessor(player);
     }
@@ -55,6 +62,13 @@ public class Level1 implements Screen {
         renderer.render();
         renderer.getBatch().begin();
         player.draw(renderer.getBatch());
+
+        for (Enemy enemy : enemies) {
+                if (enemy.isDeadly()) {
+                    System.out.println("You died");
+                    ((Game) Gdx.app.getApplicationListener()).setScreen(new Levels());
+            }
+        }
 
         crab.draw(renderer.getBatch());
         renderer.getBatch().end();
