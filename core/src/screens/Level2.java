@@ -18,6 +18,9 @@ import com.badlogic.gdx.audio.Music;
 import entities.Teeth;
 import extensions.LevelMaker;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Level2 implements Screen {
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
@@ -28,6 +31,7 @@ public class Level2 implements Screen {
     private Music mapMusic;
     private LevelMaker levelMaker;
     private Sound deathSound;
+    List<Enemy> enemies = new ArrayList<>();
 
     @Override
     public void show() {
@@ -50,8 +54,8 @@ public class Level2 implements Screen {
         //crab.setPosition(map.getProperties().get("width", Integer.class)*6-40, 8*16);
 
         teeth = new Teeth(new Sprite(new Texture("img/enemies/teeth1.png")));
-        teeth.setPosition(26 * 16, 22.5f * 16);
-
+        teeth.setPosition(26 * 16, 21 * 16);
+        enemies.add(teeth);
         Gdx.input.setInputProcessor(player);
     }
 
@@ -69,11 +73,12 @@ public class Level2 implements Screen {
         player.draw(renderer.getBatch());
 
 
-        if (teeth.getBoundingRectangle().overlaps(player.getBoundingRectangle())) {
-            if (teeth.isDeadly) {
-                System.out.println("You died");
-                deathSound.play();
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new Levels());
+        for (Enemy enemy : enemies) {
+            if(enemy.getBoundingRectangle().overlaps(player.getBoundingRectangle())) {
+                if (enemy.isDeadly()) {
+                    System.out.println("You died");
+                    ((Game) Gdx.app.getApplicationListener()).setScreen(new Levels());
+                }
             }
         }
         //crab.draw(renderer.getBatch());
