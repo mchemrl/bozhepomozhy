@@ -20,7 +20,7 @@ public class WinScreen implements Screen, InputProcessor {
 
         Label.LabelStyle style = new Label.LabelStyle();
         style.font = font;
-        label = new Label("YOU WON", style);
+        label = new Label(" ВIТА COCE ПЕНIC", style);
         label.setFontScale(3);
         label.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
 
