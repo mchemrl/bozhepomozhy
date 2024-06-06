@@ -31,7 +31,7 @@ public class Loader {
         }
     }
 
-    public int loadProgress(){
+    public static int loadProgress(){
         try{
             BufferedReader reader = new BufferedReader(new FileReader(new File("core/src/extensions/progress.txt")));
             int coins = Integer.parseInt(reader.readLine());
