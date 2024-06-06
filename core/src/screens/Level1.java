@@ -11,11 +11,15 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import entities.*;
 import com.badlogic.gdx.audio.Music;
 import extensions.LevelMaker;
+import extensions.Loader;
+import extensions.Saver;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Level1 implements Screen {
@@ -30,6 +34,9 @@ public class Level1 implements Screen {
     private Crab crab2;
     private Teeth teeth, teeth2, teeth4,teeth3;
     private Coins coinsRow;
+    private int collectedCoins = 0;
+//    private TextArea coinsProgress = new TextArea("Coins: " + collectedCoins, new TextArea.TextAreaStyle());
+
 
     @Override
     public void show() {
@@ -57,8 +64,7 @@ public class Level1 implements Screen {
         teeth4.setPosition(34 * 16, 41 * 16);
         enemies.add(teeth4);
 
-        coinsRow = new Coins(26*16,36*16, 23.5f*16,23.5f*16);
-
+        coinsRow = new Coins(25.5f*16,35.5f*16, 23.5f*16,23.5f*16);
 
         Gdx.input.setInputProcessor(player);
     }
@@ -75,7 +81,18 @@ public class Level1 implements Screen {
         renderer.render();
         renderer.getBatch().begin();
         player.draw(renderer.getBatch());
-        coinsRow.draw(renderer.getBatch());
+
+        Iterator<Coin> coinIterator = coinsRow.getCoinRow().iterator();
+        while (coinIterator.hasNext()) {
+            Coin coin = coinIterator.next();
+            if (coin.getBoundingRectangle().overlaps(player.getBoundingRectangle())) {
+                coinIterator.remove();
+                collectedCoins++;
+                Saver.saveProgress(collectedCoins);
+            } else {
+                coin.draw(renderer.getBatch());
+            }
+        }
 
         for (Enemy enemy : enemies) {
             if(enemy.getBoundingRectangle().overlaps(player.getBoundingRectangle())) {

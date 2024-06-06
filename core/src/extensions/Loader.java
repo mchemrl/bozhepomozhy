@@ -30,4 +30,17 @@ public class Loader {
             return false;
         }
     }
+
+    public int loadProgress(){
+        try{
+            BufferedReader reader = new BufferedReader(new FileReader(new File("core/src/extensions/progress.txt")));
+            int coins = Integer.parseInt(reader.readLine());
+            reader.close();
+            return coins;
+        }catch (IOException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
 }

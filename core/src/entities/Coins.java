@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Coins extends Sprite {
@@ -31,30 +32,19 @@ public class Coins extends Sprite {
         return coins;
     }
 
-    public void update(float delta) {
-        //stateTime += delta;
-        //float oldX = getX(), oldY = getY(), tileWidth = collisionLayer.getTileWidth(), tileHeight = collisionLayer.getTileHeight();
-        //int pixelsToMove = (int) (speed * delta);
-    }
-
     public void draw(Batch batch) {
-        for (Coin coin : coinRow) {
+        Iterator<Coin> iterator = coinRow.iterator();
+        while (iterator.hasNext()) {
+            Coin coin = iterator.next();
             coin.draw(batch);
         }
-
-//    public boolean isCollected() {
-//        return false;
-//    }
-
-//    public void setCollected(boolean collected) {
-//
-//    }
-//
-//    public void setCollected(){
-//
-
-
     }
 
+    public List<Coin> getCoinRow() {
+        return coinRow;
+    }
 
+    public void removeCoin(Coin coin) {
+        coinRow.remove(coin);
+    }
 }
