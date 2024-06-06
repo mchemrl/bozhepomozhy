@@ -3,32 +3,32 @@ package entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class Coins  extends Sprite {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Coins extends Sprite {
 
     public Animation<TextureRegion> animation;
     private float stateTime;
+    private List<Coin> coinRow;
 
-    public Coins(float min, float max) {
+    public Coins(float minX, float maxX, float minY, float maxY) {
         super(new Texture("img/pearl.png"));
-        animate();
-        line(min,max);
+        coinRow = line(minX, maxX, minY, maxY);
     }
 
-    private void line(float min, float max) {
-        for (float i=min; i<=max; i++){
-
+    private List<Coin> line(float x1, float x2, float y1, float y2) {
+        List<Coin> coins = new ArrayList<>();
+        for (float x = x1; x <= x2; x += 16) {
+            for (float y = y1; y <= y2; y += 16) {
+                coins.add(new Coin(x, y));
+            }
         }
-    }
-
-    public void animate(){
-        TextureRegion[] frames = new   TextureRegion[2];
-        frames[0] = new TextureRegion(new Texture(Gdx.files.internal("img/pearl.png")));
-        frames[1] = new TextureRegion(new Texture(Gdx.files.internal("img/pearl2.png")));
-        animation = new Animation<TextureRegion>(0.2f,frames);
-        stateTime = 0f;
+        return coins;
     }
 
     public void update(float delta) {
@@ -37,22 +37,22 @@ public class Coins  extends Sprite {
         //int pixelsToMove = (int) (speed * delta);
     }
 
-    public void draw() {
-        //update(Gdx.graphics.getDeltaTime());
-        //stateTime += Gdx.graphics.getDeltaTime();
-        //TextureRegion currentFrame = animation.getKeyFrame(stateTime, true);
-        //batch.draw(currentFrame, getX(), getY(), getWidth(), getHeight());
-    }
+    public void draw(Batch batch) {
+        for (Coin coin : coinRow) {
+            coin.draw(batch);
+        }
 
-    public boolean isCollected() {
-        return false;
-    }
+//    public boolean isCollected() {
+//        return false;
+//    }
 
-    public void setCollected(boolean collected) {
+//    public void setCollected(boolean collected) {
+//
+//    }
+//
+//    public void setCollected(){
+//
 
-    }
-
-    public void setCollected(){
 
     }
 

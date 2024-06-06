@@ -11,11 +11,8 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import entities.Crab;
-import entities.Enemy;
-import entities.Player;
+import entities.*;
 import com.badlogic.gdx.audio.Music;
-import entities.Teeth;
 import extensions.LevelMaker;
 
 import java.util.ArrayList;
@@ -32,6 +29,7 @@ public class Level1 implements Screen {
     List<Enemy> enemies = new ArrayList<>();
     private Crab crab2;
     private Teeth teeth, teeth2, teeth4,teeth3;
+    private Coins coinsRow;
 
     @Override
     public void show() {
@@ -46,13 +44,6 @@ public class Level1 implements Screen {
 
         player = levelMaker.createPlayer((TiledMapTileLayer) map.getLayers().get(0));
 
-        crab = new Crab(new Sprite(new Texture("img/enemies/CrabMoving1.png")), (TiledMapTileLayer) map.getLayers().get(0), 40, 0);
-        crab.setPosition(crab.getX()+27*LevelMaker.SIZE, crab.getY() + LevelMaker.SIZE*21);
-        enemies.add(crab);
-//        crab2 = new Crab(new Sprite(new Texture("img/enemies/CrabMoving1.png")), (TiledMapTileLayer) map.getLayers().get(0), 40, 0);
-//        crab2.setPosition(crab2.getX()+37*LevelMaker.SIZE, crab2.getY() + LevelMaker.SIZE*31);
-//        enemies.add(crab2);
-
         teeth = new Teeth(new Sprite(new Texture("img/enemies/teeth1.png")));
         teeth.setPosition(26 * 16, 20 * 16);
         enemies.add(teeth);
@@ -66,6 +57,9 @@ public class Level1 implements Screen {
         teeth4.setPosition(34 * 16, 41 * 16);
         enemies.add(teeth4);
 
+        coinsRow = new Coins(26*16,36*16, 23.5f*16,23.5f*16);
+
+
         Gdx.input.setInputProcessor(player);
     }
     @Override
@@ -76,13 +70,12 @@ public class Level1 implements Screen {
         camera.position.set(player.getX() + player.getWidth()/2, player.getY() + player.getWidth()/2, 0);
         camera.update();
 
-        crab.update(delta);
-//        crab2.update(delta);
 
         renderer.setView(camera);
         renderer.render();
         renderer.getBatch().begin();
         player.draw(renderer.getBatch());
+        coinsRow.draw(renderer.getBatch());
 
         for (Enemy enemy : enemies) {
             if(enemy.getBoundingRectangle().overlaps(player.getBoundingRectangle())) {
@@ -130,12 +123,11 @@ public class Level1 implements Screen {
         renderer.dispose();
         player.getTexture().dispose();
 
-        crab.getTexture().dispose();
-//        crab2.getTexture().dispose();
         teeth.getTexture().dispose();
         teeth2.getTexture().dispose();
         teeth3.getTexture().dispose();
         teeth4.getTexture().dispose();
+        coinsRow.getTexture().dispose();
         mapMusic.dispose();
     }
 }
