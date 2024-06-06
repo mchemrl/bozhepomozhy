@@ -99,7 +99,7 @@ public class Settings implements Screen {
                 }else if(previousScreen.equals("levels")){
                     ((Game) Gdx.app.getApplicationListener()).setScreen(new Levels());
                 }else{
-                    ((Game) Gdx.app.getApplicationListener()).setScreen(new ArcadeScreen());
+                    ((Game) Gdx.app.getApplicationListener()).setScreen(new Instructions());
                 }
             }
         });
