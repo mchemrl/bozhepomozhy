@@ -18,6 +18,8 @@ import com.badlogic.gdx.math.Vector2;
 public class Enemy extends Sprite {
 
 
+    public boolean isDeadly;
+
     public Enemy(Sprite sprite ) {
         super(sprite);
     }

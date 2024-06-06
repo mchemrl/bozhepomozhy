@@ -12,22 +12,27 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import entities.Crab;
 import entities.Enemy;
 import entities.Player;
 import com.badlogic.gdx.audio.Music;
 import entities.Teeth;
 import extensions.LevelMaker;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Level2 implements Screen {
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
     private Player player;
-    private Enemy crab;
+    private Crab crab, crab2, crab3, crab4, crab5;
     private Teeth teeth;
     private Music mapMusic;
     private LevelMaker levelMaker;
     private Sound deathSound;
+    List<Enemy> enemies = new ArrayList<>();
 
     @Override
     public void show() {
@@ -46,11 +51,21 @@ public class Level2 implements Screen {
         player = new Player(new Sprite(new Texture("img/player.png")), (TiledMapTileLayer) map.getLayers().get(1));
         player.setPosition(player.getX() + 40 * 16, player.getY() + 18 * 16);
 
-        //crab = new Enemy(new Sprite(new Texture("img/enemies/CrabMoving1.png")));
-        //crab.setPosition(map.getProperties().get("width", Integer.class)*6-40, 8*16);
-
-        teeth = new Teeth(new Sprite(new Texture("img/enemies/teeth1.png")));
-        teeth.setPosition(26 * 16, 22.5f * 16);
+        crab = new Crab(new Sprite(new Texture("img/enemies/CrabMoving1.png")), (TiledMapTileLayer) map.getLayers().get(1), 0, 30);
+        crab.setPosition(36*16,17*16);
+        enemies.add(crab);
+        crab2 = new Crab(new Sprite(new Texture("img/enemies/CrabMoving1.png")), (TiledMapTileLayer) map.getLayers().get(1), 0, 30);
+        crab2.setPosition(39*16,27*16);
+        enemies.add(crab2);
+        crab3 = new Crab(new Sprite(new Texture("img/enemies/CrabMoving1.png")), (TiledMapTileLayer) map.getLayers().get(1), 0, 30);
+        crab3.setPosition(43*16,30*16);
+        enemies.add(crab3);
+        crab4 = new Crab(new Sprite(new Texture("img/enemies/CrabMoving1.png")), (TiledMapTileLayer) map.getLayers().get(1), 30, 0);
+        crab4.setPosition(22*16,28*16);
+        enemies.add(crab4);
+        crab5 = new Crab(new Sprite(new Texture("img/enemies/CrabMoving1.png")), (TiledMapTileLayer) map.getLayers().get(1), 30, 0);
+        crab5.setPosition(23*16,38.5f*16);
+        enemies.add(crab5);
 
         Gdx.input.setInputProcessor(player);
     }
@@ -62,6 +77,9 @@ public class Level2 implements Screen {
 
         camera.position.set(player.getX() + player.getWidth() / 2, player.getY() + player.getWidth() / 2, 0);
         camera.update();
+        for (Enemy enemy : enemies) {
+            enemy.update(delta);
+        }
 
         renderer.setView(camera);
         renderer.render();
@@ -69,15 +87,22 @@ public class Level2 implements Screen {
         player.draw(renderer.getBatch());
 
 
-        if (teeth.getBoundingRectangle().overlaps(player.getBoundingRectangle())) {
-            if (teeth.isDeadly) {
-                System.out.println("You died");
-                deathSound.play();
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new Levels());
+        for (Enemy enemy : enemies) {
+            if(enemy.getBoundingRectangle().overlaps(player.getBoundingRectangle())) {
+                if (enemy.isDeadly()) {
+                    System.out.println("You died");
+                    ((Game) Gdx.app.getApplicationListener()).setScreen(new Levels());
+                }
             }
         }
+        if (player.isCaught){
+            System.out.println("You died");
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new Levels());
+        }
         //crab.draw(renderer.getBatch());
-        teeth.draw(renderer.getBatch());
+        for (Enemy enemy : enemies) {
+            enemy.draw(renderer.getBatch());
+        }
         renderer.getBatch().end();
         levelMaker.checkWinCondition(player);
 
@@ -111,8 +136,13 @@ public class Level2 implements Screen {
         renderer.dispose();
         player.getTexture().dispose();
 
-        //crab.getTexture().dispose();
-        teeth.getTexture().dispose();
+        crab.getTexture().dispose();
+        crab2.getTexture().dispose();
+        crab3.getTexture().dispose();
+        crab4.getTexture().dispose();
+        crab5.getTexture().dispose();
+
         mapMusic.dispose();
+
     }
 }

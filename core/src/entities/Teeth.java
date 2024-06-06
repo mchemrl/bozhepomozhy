@@ -11,11 +11,12 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 
-public class Teeth extends Sprite {
+public class Teeth extends Enemy {
     private TiledMapTileLayer collisionLayer;
     private TweenManager tweenManager;
     private Vector2 velocity = new Vector2();
@@ -41,6 +42,7 @@ public class Teeth extends Sprite {
         stateTime = 0f;
     }
 
+    @Override
     public void draw(Batch batch) {
         //update(Gdx.graphics.getDeltaTime());
         stateTime += Gdx.graphics.getDeltaTime();
@@ -52,6 +54,18 @@ public class Teeth extends Sprite {
         // Draw the current frame
         batch.draw(currentFrame, getX(), getY(), getWidth(), getHeight());
     }
+
+    @Override
+    public boolean isDeadly() {
+        return isDeadly;
+    }
+
+
+    @Override
+    public Rectangle getBoundingRectangle() {
+        return new Rectangle(getX(), getY(), getWidth(), getHeight());
+    }
+
 
 //    private void update(float deltaTime) {
 //        velocity.y -= gravity * deltaTime;

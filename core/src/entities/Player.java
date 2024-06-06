@@ -57,11 +57,13 @@ public class Player extends Sprite implements InputProcessor {
                 boolean collisionX;
                 if (velocity.x < 0) {
                     collisionX = collisionLayer.getCell((int) ((getX()) / tileWidth), (int) ((getY() + getHeight() / 2) / tileHeight)).getTile().getProperties().containsKey("blocked");
+                    isCaught = collisionLayer.getCell((int) ((getX()) / tileWidth), (int) ((getY() + getHeight() / 2) / tileHeight)).getTile().getProperties().containsKey("deadly");
                     if (collisionX) {
                         setRotation(270);
                     }
                 } else {
                     collisionX = collisionLayer.getCell((int) ((getX() + getWidth()) / tileWidth), (int) ((getY() + getHeight() / 2) / tileHeight)).getTile().getProperties().containsKey("blocked");
+                    isCaught = collisionLayer.getCell((int) ((getX() + getWidth()) / tileWidth), (int) ((getY() + getHeight() / 2) / tileHeight)).getTile().getProperties().containsKey("deadly");
                     if (collisionX) {
                         setRotation(90);
                     }
@@ -81,11 +83,13 @@ public class Player extends Sprite implements InputProcessor {
                 boolean collisionY;
                 if (velocity.y < 0) {
                     collisionY = collisionLayer.getCell((int) ((getX() + getWidth() / 2) / tileWidth), (int) ((getY()) / tileHeight)).getTile().getProperties().containsKey("blocked");
+                    isCaught = collisionLayer.getCell((int) ((getX() + getWidth() / 2) / tileWidth), (int) ((getY()) / tileHeight)).getTile().getProperties().containsKey("deadly");
                     if (collisionY) {
                         setRotation(0);
                     }
                 } else {
                     collisionY = collisionLayer.getCell((int) ((getX() + getWidth() / 2) / tileWidth), (int) ((getY() + getHeight()) / tileHeight)).getTile().getProperties().containsKey("blocked");
+                    isCaught = collisionLayer.getCell((int) ((getX() + getWidth() / 2) / tileWidth), (int) ((getY() + getHeight()) / tileHeight)).getTile().getProperties().containsKey("deadly");
                     if (collisionY) {
                         setRotation(180);
                     }

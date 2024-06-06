@@ -60,7 +60,7 @@ public class WinScreen implements Screen, InputProcessor {
     }
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.ESCAPE) {
+        if (keycode == Input.Keys.ENTER) {
             ((Game) Gdx.app.getApplicationListener()).setScreen(new Levels());
             return true;
         }

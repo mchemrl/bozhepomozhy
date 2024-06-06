@@ -19,6 +19,17 @@ public class Saver {
             e.printStackTrace();
         }
     }
+
+    public static void saveProgress(int coins){
+        try {
+            PrintWriter writer = new PrintWriter(new File("core/src/extensions/progress.txt"));
+            writer.println(coins);
+            writer.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+    }
     public void saveProgress(){
 
     }
