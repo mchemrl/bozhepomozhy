@@ -18,7 +18,7 @@ public class Coins extends Sprite {
     private List<Coin> coinRow;
 
     public Coins(float minX, float maxX, float minY, float maxY) {
-        super(new Texture("img/pearl.png"));
+        super(new Texture(Gdx.files.internal("img/pearl.png")));
         coinRow = line(minX, maxX, minY, maxY);
     }
 

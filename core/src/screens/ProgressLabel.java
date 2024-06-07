@@ -16,7 +16,7 @@ public class ProgressLabel extends Table {
     private Image pearlImage;
 private Texture pearlTexture;
     public ProgressLabel() {
-        pearlTexture = new Texture(Gdx.files.internal("assets/img/pearlLabel.png"));
+        pearlTexture = new Texture(Gdx.files.internal("img/pearlLabel.png"));
         Sprite pearlSprite = new Sprite(pearlTexture);
         pointsLabel = new Label("X 0", new LabelStyle(new BitmapFont(), Color.WHITE));
         pointsLabel.setFontScale(4);

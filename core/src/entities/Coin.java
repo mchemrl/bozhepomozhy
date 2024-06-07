@@ -14,7 +14,7 @@ public  class Coin extends Sprite {
     private float stateTime;
 
     public Coin(float x, float y) {
-        super(new Texture("img/pearl.png"));
+        super(new Texture(Gdx.files.internal("img/pearl.png")));
         setPosition(x, y);
         animate();
     }
