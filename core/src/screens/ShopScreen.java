@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label; // Додаємо імпорт класу Label
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -54,6 +55,11 @@ public class ShopScreen implements Screen {
 
         stage.addActor(spriteButton);
 
+        // Додаємо напис "Choose Your Fighter" вгорі над кнопкою
+        Label chooseFighterLabel = new Label("Choose Your Fighter", skin, "default");
+        chooseFighterLabel.setPosition(Gdx.graphics.getWidth() / 2 - chooseFighterLabel.getWidth() / 2, Gdx.graphics.getHeight() / 2 + spriteButton.getHeight() / 2 + 20);
+        stage.addActor(chooseFighterLabel);
+
         // Додаємо кнопку налаштувань
         settingButton = new TextButton(" ", skin, "settingbutton");
         settingButton.addListener(new ClickListener() {
@@ -65,14 +71,12 @@ public class ShopScreen implements Screen {
             }
         });
 
-        // Розміщуємо кнопку налаштувань на екрані
         Table topRightTable = new Table();
         topRightTable.setFillParent(true);
         topRightTable.top().right();
-        topRightTable.add(settingButton).width(70).height(70).pad(10); // Встановлюємо розмір тут
+        topRightTable.add(settingButton).width(70).height(70).pad(10);
 
-        stage.addActor(topRightTable); // Додаємо таблицю з кнопкою налаштувань
-
+        stage.addActor(topRightTable);
         bottomMenu = new BottomMenu(stage, skin,
                 () -> {
                     // Action for shop button
