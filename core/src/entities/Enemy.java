@@ -32,6 +32,10 @@ public class Enemy extends Sprite {
         update(Gdx.graphics.getDeltaTime());
     }
 
+    public void hit() {
+        // Do nothing
+    }
+
     public Rectangle getBoundingRectangle() {
         return new Rectangle(getX(), getY(), getWidth(), getHeight());
     }

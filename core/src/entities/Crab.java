@@ -36,6 +36,16 @@ public class Crab extends Enemy {
     }
 
     @Override
+    public void hit() {
+        TextureRegion[] frames = new TextureRegion[4];
+        frames[0] = new TextureRegion(new Texture(Gdx.files.internal("img/enemies/Crab_Attack1.png")));
+        frames[1] = new TextureRegion(new Texture(Gdx.files.internal("img/enemies/Crab_Attack2.png")));
+        frames[2] = new TextureRegion(new Texture(Gdx.files.internal("img/enemies/Crab_Attack3.png")));
+        frames[3] = new TextureRegion(new Texture(Gdx.files.internal("img/enemies/Crab_Attack4.png")));
+
+        animation = new Animation<TextureRegion>(0.1f, frames);
+    }
+    @Override
     public boolean isDeadly() {
         return true;
     }
