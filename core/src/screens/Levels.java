@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import extensions.Loader;
 import tween.ActorAccessor;
 
 public class Levels implements Screen {
@@ -34,10 +35,12 @@ public class Levels implements Screen {
     private boolean level1Passed;
     private boolean level2Passed;
     private BottomMenu bottomMenu;
+    private Label progressLabel;
 
     @Override
     public void show() {
         stage = new Stage();
+        Loader loader = new Loader();
 
         Gdx.input.setInputProcessor(stage);
 
@@ -54,6 +57,11 @@ public class Levels implements Screen {
         heading2 = new Label("STAGEBASED MOD", skin, "mod");
         heading1.setFontScale(.8f);
         heading2.setFontScale(.5f);
+
+        progressLabel = new Label("Points:" + loader.loadProgress(), skin);
+        progressLabel.setFontScale(2);
+        progressLabel.setPosition(progressLabel.getWidth()/2, Gdx.graphics.getHeight()  - progressLabel.getHeight()*2);
+        stage.addActor(progressLabel);
 
         level1Button = new TextButton("1", skin, "levelbutton");
         level1Button.addListener(new ClickListener() {

@@ -3,14 +3,18 @@ package screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import entities.*;
 import com.badlogic.gdx.audio.Music;
@@ -21,6 +25,7 @@ import extensions.Saver;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 
 public class Level1 implements Screen {
     private TiledMap map;
@@ -35,9 +40,11 @@ public class Level1 implements Screen {
     private Teeth teeth, teeth2, teeth4,teeth3;
     private Coins coinsRow;
     private int collectedCoins = 0;
+    private Stage stage = new Stage();
 //    private TextArea coinsProgress = new TextArea("Coins: " + collectedCoins, new TextArea.TextAreaStyle());
 
-
+    private Label pointsLabel;
+    private Label.LabelStyle labelStyle;
     @Override
     public void show() {
         levelMaker = new LevelMaker("maps/nature1.tmx", 40*LevelMaker.SIZE, 18*LevelMaker.SIZE, 607, 719);
@@ -88,7 +95,7 @@ public class Level1 implements Screen {
             if (coin.getBoundingRectangle().overlaps(player.getBoundingRectangle())) {
                 coinIterator.remove();
                 collectedCoins++;
-                Saver.saveProgress(collectedCoins);
+                Saver.saveProgress(1+Loader.loadProgress());
             } else {
                 coin.draw(renderer.getBatch());
             }
