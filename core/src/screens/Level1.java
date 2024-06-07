@@ -15,6 +15,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import entities.*;
 import com.badlogic.gdx.audio.Music;
@@ -40,11 +41,8 @@ public class Level1 implements Screen {
     private Teeth teeth, teeth2, teeth4,teeth3;
     private Coins coinsRow;
     private int collectedCoins = 0;
-    private Stage stage = new Stage();
-//    private TextArea coinsProgress = new TextArea("Coins: " + collectedCoins, new TextArea.TextAreaStyle());
-
+    private Stage stage;
     private Label pointsLabel;
-    private Label.LabelStyle labelStyle;
     @Override
     public void show() {
         levelMaker = new LevelMaker("maps/nature1.tmx", 40*LevelMaker.SIZE, 18*LevelMaker.SIZE, 607, 719);
@@ -55,6 +53,14 @@ public class Level1 implements Screen {
         map = levelMaker.loadMap();
         renderer = new OrthogonalTiledMapRenderer(map);
         camera = new OrthographicCamera();
+
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
+
+        pointsLabel = new Label("X" + collectedCoins, new LabelStyle(new BitmapFont(), Color.WHITE));
+       pointsLabel.setFontScale(4);
+        pointsLabel.setPosition(10, Gdx.graphics.getHeight() - pointsLabel.getHeight() - 10);
+        stage.addActor(pointsLabel);
 
         player = levelMaker.createPlayer((TiledMapTileLayer) map.getLayers().get(0));
 
@@ -117,6 +123,10 @@ public class Level1 implements Screen {
         levelMaker.checkWinCondition(player);
         System.out.println(player.getX());
         System.out.println(player.getY());
+
+        // Draw the stage
+        stage.act(delta);
+        stage.draw();
     }
 
     @Override
@@ -124,6 +134,7 @@ public class Level1 implements Screen {
         camera.viewportWidth = width/2;
         camera.viewportHeight = height/2;
         camera.update();
+        stage.getViewport().update(width, height, true); // Update the stage viewport
     }
 
     @Override
@@ -153,5 +164,6 @@ public class Level1 implements Screen {
         teeth4.getTexture().dispose();
         coinsRow.getTexture().dispose();
         mapMusic.dispose();
+        stage.dispose();
     }
 }

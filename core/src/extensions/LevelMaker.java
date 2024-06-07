@@ -5,13 +5,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import entities.Player;
 import screens.Levels;
 import screens.Settings;
 import screens.WinScreen;
+
+import java.awt.*;
 
 public class LevelMaker {
     private TiledMap map;
@@ -22,6 +26,7 @@ public class LevelMaker {
     private int winCoordinateX;
     private int winCoordinateY;
     public static final int SIZE = 16;
+    private Loader loader = new Loader();
 
 
     public LevelMaker(String mapPath, int playerStartX, int playerStartY, int winCoordinateX, int winCoordinateY) {
@@ -50,6 +55,12 @@ public class LevelMaker {
             mapMusic.setLooping(true);
         }
 
+    }
+
+    public Label createRrogressLabel(){
+        Label progress = new Label("Points:" + loader.loadProgress());
+        progress.setLocation(progress.getWidth()/2, Gdx.graphics.getHeight()  - progress.getHeight()*2);
+        return progress;
     }
 
     public void checkWinCondition(Player player) {
