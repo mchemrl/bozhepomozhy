@@ -35,7 +35,7 @@ public class Levels implements Screen {
     private boolean level1Passed;
     private boolean level2Passed;
     private BottomMenu bottomMenu;
-    private Label progressLabel;
+    private ProgressLabel progressLabel;
 
     @Override
     public void show() {
@@ -58,9 +58,8 @@ public class Levels implements Screen {
         heading1.setFontScale(.8f);
         heading2.setFontScale(.5f);
 
-        progressLabel = new Label("Points:" + loader.loadProgress(), skin);
-        progressLabel.setFontScale(2);
-        progressLabel.setPosition(progressLabel.getWidth()/2, Gdx.graphics.getHeight()  - progressLabel.getHeight()*2);
+        progressLabel = new ProgressLabel();
+        progressLabel.updatePoints(Loader.loadProgress());
         stage.addActor(progressLabel);
 
         level1Button = new TextButton("1", skin, "levelbutton");

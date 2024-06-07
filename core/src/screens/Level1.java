@@ -3,20 +3,21 @@ package screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import entities.*;
 import com.badlogic.gdx.audio.Music;
 import extensions.LevelMaker;
@@ -38,14 +39,17 @@ public class Level1 implements Screen {
     private LevelMaker levelMaker;
     List<Enemy> enemies = new ArrayList<>();
     private Crab crab2;
-    private Teeth teeth, teeth2, teeth4,teeth3;
+    private Teeth teeth, teeth2, teeth4, teeth3;
     private Coins coinsRow;
     private int collectedCoins = 0;
     private Stage stage;
     private Label pointsLabel;
+    private Texture pearlTexture;
+    private ProgressLabel progressLabel;
+
     @Override
     public void show() {
-        levelMaker = new LevelMaker("maps/nature1.tmx", 40*LevelMaker.SIZE, 18*LevelMaker.SIZE, 607, 719);
+        levelMaker = new LevelMaker("maps/nature1.tmx", 40 * LevelMaker.SIZE, 18 * LevelMaker.SIZE, 607, 719);
 
         mapMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/deathbyglamour.wav"));
         levelMaker.setMusic(mapMusic);
@@ -57,10 +61,9 @@ public class Level1 implements Screen {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
-        pointsLabel = new Label("X" + collectedCoins, new LabelStyle(new BitmapFont(), Color.WHITE));
-       pointsLabel.setFontScale(4);
-        pointsLabel.setPosition(10, Gdx.graphics.getHeight() - pointsLabel.getHeight() - 10);
-        stage.addActor(pointsLabel);
+
+        progressLabel = new ProgressLabel();
+        stage.addActor(progressLabel);
 
         player = levelMaker.createPlayer((TiledMapTileLayer) map.getLayers().get(0));
 
@@ -77,16 +80,17 @@ public class Level1 implements Screen {
         teeth4.setPosition(34 * 16, 41 * 16);
         enemies.add(teeth4);
 
-        coinsRow = new Coins(25.5f*16,35.5f*16, 23.5f*16,23.5f*16);
+        coinsRow = new Coins(25.5f * 16, 35.5f * 16, 23.5f * 16, 23.5f * 16);
 
         Gdx.input.setInputProcessor(player);
     }
+
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0.431f, 0.8f, 0.788f, 1); //pretty blue colour
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        camera.position.set(player.getX() + player.getWidth()/2, player.getY() + player.getWidth()/2, 0);
+        camera.position.set(player.getX() + player.getWidth() / 2, player.getY() + player.getWidth() / 2, 0);
         camera.update();
 
 
@@ -101,14 +105,14 @@ public class Level1 implements Screen {
             if (coin.getBoundingRectangle().overlaps(player.getBoundingRectangle())) {
                 coinIterator.remove();
                 collectedCoins++;
-                Saver.saveProgress(1+Loader.loadProgress());
+                Saver.saveProgress(1 + Loader.loadProgress());
             } else {
                 coin.draw(renderer.getBatch());
             }
         }
 
         for (Enemy enemy : enemies) {
-            if(enemy.getBoundingRectangle().overlaps(player.getBoundingRectangle())) {
+            if (enemy.getBoundingRectangle().overlaps(player.getBoundingRectangle())) {
                 if (enemy.isDeadly()) {
                     System.out.println("You died");
                     ((Game) Gdx.app.getApplicationListener()).setScreen(new Levels());
@@ -124,6 +128,7 @@ public class Level1 implements Screen {
         System.out.println(player.getX());
         System.out.println(player.getY());
 
+        progressLabel.updatePoints(collectedCoins);
         // Draw the stage
         stage.act(delta);
         stage.draw();
@@ -131,8 +136,8 @@ public class Level1 implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        camera.viewportWidth = width/2;
-        camera.viewportHeight = height/2;
+        camera.viewportWidth = width / 2;
+        camera.viewportHeight = height / 2;
         camera.update();
         stage.getViewport().update(width, height, true); // Update the stage viewport
     }
@@ -164,6 +169,7 @@ public class Level1 implements Screen {
         teeth4.getTexture().dispose();
         coinsRow.getTexture().dispose();
         mapMusic.dispose();
+        progressLabel.dispose();
         stage.dispose();
     }
 }

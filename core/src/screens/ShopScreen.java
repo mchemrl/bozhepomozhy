@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label; // Додаємо імпорт 
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import extensions.Loader;
 
 import static screens.Levels.buttonClickSound;
 
@@ -26,6 +27,7 @@ public class ShopScreen implements Screen {
     private TextButton settingButton; // Додаємо кнопку налаштувань
     BottomMenu bottomMenu;
     private Texture hellokittyTexture;
+    private ProgressLabel progressLabel;
 
     @Override
     public void show() {
@@ -54,6 +56,10 @@ public class ShopScreen implements Screen {
         });
 
         stage.addActor(spriteButton);
+
+        progressLabel = new ProgressLabel();
+        progressLabel.updatePoints(Loader.loadProgress());
+        stage.addActor(progressLabel);
 
         // Додаємо напис "Choose Your Fighter" вгорі над кнопкою
         Label chooseFighterLabel = new Label("Choose Your Fighter", skin, "default");

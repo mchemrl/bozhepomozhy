@@ -3,13 +3,17 @@ package extensions;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import entities.Player;
 import screens.Levels;
 import screens.Settings;
@@ -57,11 +61,6 @@ public class LevelMaker {
 
     }
 
-    public Label createRrogressLabel(){
-        Label progress = new Label("Points:" + loader.loadProgress());
-        progress.setLocation(progress.getWidth()/2, Gdx.graphics.getHeight()  - progress.getHeight()*2);
-        return progress;
-    }
 
     public void checkWinCondition(Player player) {
         if (player.getX() == winCoordinateX && player.getY() == winCoordinateY)
