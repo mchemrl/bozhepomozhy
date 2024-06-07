@@ -113,7 +113,7 @@ public class Levels implements Screen {
                     // Add your logic here
                 },
                 () -> {
-                    // Action for arcade button
+                    // Action for levels button
                     // Add your logic here
                 }
         );
