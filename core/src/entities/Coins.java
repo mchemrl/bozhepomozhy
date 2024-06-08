@@ -17,19 +17,17 @@ public class Coins extends Sprite {
     private float stateTime;
     private List<Coin> coinRow;
 
-    public Coins(float minX, float maxX, float minY, float maxY) {
+    public Coins() {
         super(new Texture(Gdx.files.internal("img/pearl.png")));
-        coinRow = line(minX, maxX, minY, maxY);
+        coinRow = new ArrayList<>();
     }
 
-    private List<Coin> line(float x1, float x2, float y1, float y2) {
-        List<Coin> coins = new ArrayList<>();
+    public void addRow(float x1, float x2, float y1, float y2) {
         for (float x = x1; x <= x2; x += 16) {
             for (float y = y1; y <= y2; y += 16) {
-                coins.add(new Coin(x, y));
+                coinRow.add(new Coin(x, y));
             }
         }
-        return coins;
     }
 
     public void draw(Batch batch) {

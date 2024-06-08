@@ -40,7 +40,7 @@ public class Level1 implements Screen {
     List<Enemy> enemies = new ArrayList<>();
     private Crab crab2;
     private Teeth teeth, teeth2, teeth4, teeth3;
-    private Coins coinsRow;
+    private final Coins coins = new Coins();
     private int collectedCoins = 0;
     private Stage stage;
     private Label pointsLabel;
@@ -49,7 +49,7 @@ public class Level1 implements Screen {
 
     @Override
     public void show() {
-        levelMaker = new LevelMaker("maps/nature1.tmx", 40 * LevelMaker.SIZE, 18 * LevelMaker.SIZE, 607, 719);
+        levelMaker = new LevelMaker("maps/nature1.tmx", 38 * LevelMaker.SIZE, 18 * LevelMaker.SIZE, 607, 719);
 
         mapMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/deathbyglamour.wav"));
         levelMaker.setMusic(mapMusic);
@@ -80,7 +80,20 @@ public class Level1 implements Screen {
         teeth4.setPosition(34 * 16, 41 * 16);
         enemies.add(teeth4);
 
-        coinsRow = new Coins(25.5f * 16, 35.5f * 16, 23.5f * 16, 23.5f * 16);
+        coins.addRow(26 * 16, 35.5f * 16, 23.5f * 16, 23.5f * 16);
+        coins.addRow(37 * 16, 42.5f * 16, 17 * 16, 17 * 16);
+        coins.addRow(42.5f * 16, 42.5f * 16, 18 * 16, 23.5f * 16);
+        coins.addRow(40 * 16, 41.5f * 16, 23.5f* 16, 23.5f * 16);
+        coins.addRow(35*16, 41*16,22*16,22*16);
+        coins.addRow(26*16,29.5f*16,20*16,20*16);
+        coins.addRow(29.5f*16,29.5f*16,21*16,28.5f*16);
+        coins.addRow(30.5f*16,33.5f*16,28*16, 28*16);
+        coins.addRow(38*16,38*16,26*16,33*16);
+        coins.addRow(34*16,34*16,31*16,33*16);
+        coins.addRow(35.5f*16,35.5f*16,31*16,41*16);
+        coins.addRow(34*16,34*16,38*16,41*16);
+        coins.addRow(36.5f*16,38.5f*16,41*16,41*16);
+        coins.addRow(38.5f*16,38.5f*16,41*16,43*16);
 
         Gdx.input.setInputProcessor(player);
     }
@@ -99,7 +112,7 @@ public class Level1 implements Screen {
         renderer.getBatch().begin();
         player.draw(renderer.getBatch());
 
-        Iterator<Coin> coinIterator = coinsRow.getCoinRow().iterator();
+        Iterator<Coin> coinIterator = coins.getCoinRow().iterator();
         while (coinIterator.hasNext()) {
             Coin coin = coinIterator.next();
             if (coin.getBoundingRectangle().overlaps(player.getBoundingRectangle())) {
@@ -167,7 +180,7 @@ public class Level1 implements Screen {
         teeth2.getTexture().dispose();
         teeth3.getTexture().dispose();
         teeth4.getTexture().dispose();
-        coinsRow.getTexture().dispose();
+        coins.getTexture().dispose();
         mapMusic.dispose();
         progressLabel.dispose();
         stage.dispose();
