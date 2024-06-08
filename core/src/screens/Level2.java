@@ -80,7 +80,7 @@ public class Level2 implements Screen {
         crab5 = new Crab(new Sprite(new Texture("img/enemies/CrabMoving1.png")), (TiledMapTileLayer) map.getLayers().get(1), 30, 0);
         crab5.setPosition(23*16,38.5f*16);
         enemies.add(crab5);
-        //coins.fill(map, 1);
+        coins.fill(map, 1);
 
 
         Gdx.input.setInputProcessor(player);
