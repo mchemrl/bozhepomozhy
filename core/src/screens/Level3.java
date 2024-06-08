@@ -12,14 +12,16 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import entities.Crab;
-import entities.Enemy;
-import entities.Player;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import entities.*;
 import com.badlogic.gdx.audio.Music;
-import entities.Teeth;
 import extensions.LevelMaker;
+import extensions.Loader;
+import extensions.Saver;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Level3 implements Screen {
@@ -33,6 +35,12 @@ public class Level3 implements Screen {
     private LevelMaker levelMaker;
     private Sound deathSound;
     List<Enemy> enemies = new ArrayList<>();
+    private final Coins coins = new Coins();
+    private int collectedCoins = 0;
+    private Stage stage;
+    private Label pointsLabel;
+    private Texture pearlTexture;
+    private ProgressLabel progressLabel;
 
     @Override
     public void show() {
@@ -47,6 +55,13 @@ public class Level3 implements Screen {
         map = new TmxMapLoader().load("maps/level3.tmx");
         renderer = new OrthogonalTiledMapRenderer(map);
         camera = new OrthographicCamera();
+
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
+
+        progressLabel = new ProgressLabel();
+        stage.addActor(progressLabel);
+
 
         player = new Player(new Sprite(new Texture("img/player.png")), (TiledMapTileLayer) map.getLayers().get(1));
         player.setPosition(player.getX() + 56 * 16, player.getY() + 20 * 16);
@@ -66,6 +81,7 @@ public class Level3 implements Screen {
 //        crab5 = new Crab(new Sprite(new Texture("img/enemies/CrabMoving1.png")), (TiledMapTileLayer) map.getLayers().get(1), 30, 0);
 //        crab5.setPosition(23*16,38.5f*16);
 //        enemies.add(crab5);
+        coins.fill(map, 1);
 
         Gdx.input.setInputProcessor(player);
     }
@@ -77,6 +93,7 @@ public class Level3 implements Screen {
 
         camera.position.set(player.getX() + player.getWidth() / 2, player.getY() + player.getWidth() / 2, 0);
         camera.update();
+
         for (Enemy enemy : enemies) {
             enemy.update(delta);
         }
@@ -86,6 +103,17 @@ public class Level3 implements Screen {
         renderer.getBatch().begin();
         player.draw(renderer.getBatch());
 
+        Iterator<Coin> coinIterator = coins.getCoinRow().iterator();
+        while (coinIterator.hasNext()) {
+            Coin coin = coinIterator.next();
+            if (coin.getBoundingRectangle().overlaps(player.getBoundingRectangle())) {
+                coinIterator.remove();
+                collectedCoins++;
+                Saver.saveProgress(1 + Loader.loadProgress());
+            } else {
+                coin.draw(renderer.getBatch());
+            }
+        }
 
         for (Enemy enemy : enemies) {
             if(enemy.getBoundingRectangle().overlaps(player.getBoundingRectangle())) {
@@ -106,7 +134,10 @@ public class Level3 implements Screen {
         renderer.getBatch().end();
 
         levelMaker.checkWinCondition(player);
-
+        progressLabel.updatePoints(collectedCoins);
+        // Draw the stage
+        stage.act(delta);
+        stage.draw();
     }
 
     @Override
@@ -114,6 +145,7 @@ public class Level3 implements Screen {
         camera.viewportWidth = width / 2;
         camera.viewportHeight = height / 2;
         camera.update();
+        stage.getViewport().update(width, height, true); // Update the stage viewport
     }
 
     @Override
@@ -142,8 +174,9 @@ public class Level3 implements Screen {
 //        crab3.getTexture().dispose();
 //        crab4.getTexture().dispose();
 //        crab5.getTexture().dispose();
-
         mapMusic.dispose();
-
+        coins.getTexture().dispose();
+        progressLabel.dispose();
+        stage.dispose();
     }
 }

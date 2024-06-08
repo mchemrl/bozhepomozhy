@@ -61,7 +61,6 @@ public class Level1 implements Screen {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
-
         progressLabel = new ProgressLabel();
         stage.addActor(progressLabel);
 
@@ -80,20 +79,22 @@ public class Level1 implements Screen {
         teeth4.setPosition(34 * 16, 41 * 16);
         enemies.add(teeth4);
 
-        coins.addRow(26 * 16, 35.5f * 16, 23.5f * 16, 23.5f * 16);
-        coins.addRow(37 * 16, 42.5f * 16, 17 * 16, 17 * 16);
-        coins.addRow(42.5f * 16, 42.5f * 16, 18 * 16, 23.5f * 16);
-        coins.addRow(40 * 16, 41.5f * 16, 23.5f* 16, 23.5f * 16);
-        coins.addRow(35*16, 41*16,22*16,22*16);
-        coins.addRow(26*16,29.5f*16,20*16,20*16);
-        coins.addRow(29.5f*16,29.5f*16,21*16,28.5f*16);
-        coins.addRow(30.5f*16,33.5f*16,28*16, 28*16);
-        coins.addRow(38*16,38*16,26*16,33*16);
-        coins.addRow(34*16,34*16,31*16,33*16);
-        coins.addRow(35.5f*16,35.5f*16,31*16,41*16);
-        coins.addRow(34*16,34*16,38*16,41*16);
-        coins.addRow(36.5f*16,38.5f*16,41*16,41*16);
-        coins.addRow(38.5f*16,38.5f*16,41*16,43*16);
+//        coins.addRow(26 * 16, 35.5f * 16, 23.5f * 16, 23.5f * 16);
+//        coins.addRow(37 * 16, 42.5f * 16, 17 * 16, 17 * 16);
+//        coins.addRow(42.5f * 16, 42.5f * 16, 18 * 16, 23.5f * 16);
+//        coins.addRow(40 * 16, 41.5f * 16, 23.5f* 16, 23.5f * 16);
+//        coins.addRow(35*16, 41*16,22*16,22*16);
+//        coins.addRow(26*16,29.5f*16,20*16,20*16);
+//        coins.addRow(29.5f*16,29.5f*16,21*16,28.5f*16);
+//        coins.addRow(30.5f*16,33.5f*16,28*16, 28*16);
+//        coins.addRow(38*16,38*16,26*16,33*16);
+//        coins.addRow(34*16,34*16,31*16,33*16);
+//        coins.addRow(35.5f*16,35.5f*16,31*16,41*16);
+//        coins.addRow(34*16,34*16,38*16,41*16);
+//        coins.addRow(36.5f*16,38.5f*16,41*16,41*16);
+//        coins.addRow(38.5f*16,38.5f*16,41*16,43*16);
+        coins.fill(map, 0);
+
 
         Gdx.input.setInputProcessor(player);
     }
@@ -132,14 +133,16 @@ public class Level1 implements Screen {
                 }
             }
         }
+        if (player.isCaught) {
+            System.out.println("You died");
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new Levels());
+        }
         for (Enemy enemy : enemies) {
             enemy.draw(renderer.getBatch());
         }
         renderer.getBatch().end();
 
         levelMaker.checkWinCondition(player);
-        System.out.println(player.getX());
-        System.out.println(player.getY());
 
         progressLabel.updatePoints(collectedCoins);
         // Draw the stage

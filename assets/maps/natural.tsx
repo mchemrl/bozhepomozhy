@@ -36,6 +36,11 @@
    <property name="blocked" value=""/>
   </properties>
  </tile>
+ <tile id="11">
+  <properties>
+   <property name="forpearl" value=""/>
+  </properties>
+ </tile>
  <tile id="12">
   <properties>
    <property name="blocked" value=""/>
