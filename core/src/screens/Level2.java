@@ -117,7 +117,7 @@ public class Level2 implements Screen {
             if(enemy.getBoundingRectangle().overlaps(player.getBoundingRectangle())) {
                 if (enemy.isDeadly()) {
                     enemy.hit();
-                    ((Game) Gdx.app.getApplicationListener()).setScreen(new Levels());
+                    ((Game) Gdx.app.getApplicationListener()).setScreen(new LoseScreen(Level2.class));
                 }
             }
         }

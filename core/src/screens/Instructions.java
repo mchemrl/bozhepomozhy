@@ -33,6 +33,9 @@ public class Instructions implements Screen {
     private Texture crabMoving1Texture, crabMoving2Texture, crabMoving3Texture, crabMoving4Texture;
     private Texture pearlTexture;
 
+
+    private Texture stoneTexture;
+
     @Override
     public void show() {
         stage = new Stage(new ScreenViewport());
@@ -43,24 +46,24 @@ public class Instructions implements Screen {
         atlas = new TextureAtlas("ui/levels/buttons.txt");
         skin = new Skin(Gdx.files.internal("ui/levels/levelsSkin.json"), atlas);
 
+        // Завантаження текстур
         wTexture = new Texture(Gdx.files.internal("img/w.png"));
         aTexture = new Texture(Gdx.files.internal("img/a.png"));
         sTexture = new Texture(Gdx.files.internal("img/s.png"));
         dTexture = new Texture(Gdx.files.internal("img/d.png"));
-
         teeth1Texture = new Texture(Gdx.files.internal("img/enemies/teeth1.png"));
         teeth2Texture = new Texture(Gdx.files.internal("img/enemies/teeth2.png"));
         teeth3Texture = new Texture(Gdx.files.internal("img/enemies/teeth3.png"));
         teeth4Texture = new Texture(Gdx.files.internal("img/enemies/teeth4.png"));
         teeth5Texture = new Texture(Gdx.files.internal("img/enemies/teeth5.png"));
-
         crabMoving1Texture = new Texture(Gdx.files.internal("img/enemies/crabMoving1.png"));
         crabMoving2Texture = new Texture(Gdx.files.internal("img/enemies/crabMoving2.png"));
         crabMoving3Texture = new Texture(Gdx.files.internal("img/enemies/crabMoving3.png"));
         crabMoving4Texture = new Texture(Gdx.files.internal("img/enemies/crabMoving4.png"));
-
         pearlTexture = new Texture(Gdx.files.internal("img/pearl.png"));
+        stoneTexture = new Texture(Gdx.files.internal("maps/stone.psd"));
 
+        // Додавання кнопки інструкцій
         instructionsButton = new TextButton("", skin);
         instructionsButton.setSize(1000, 850);
         instructionsButton.setPosition(Gdx.graphics.getWidth() / 2 - instructionsButton.getWidth() / 2, Gdx.graphics.getHeight() / 2 - instructionsButton.getHeight() / 2 - 40);
@@ -93,9 +96,10 @@ public class Instructions implements Screen {
                 () -> {}
         );
 
-        // Start the sequence
+        // Відображення інструкцій
         showWImage();
     }
+
 
     private void showWImage() {
         Image wImage = new Image(new TextureRegionDrawable(new TextureRegion(wTexture)));
@@ -154,30 +158,45 @@ public class Instructions implements Screen {
         addLabelToButton("but when i wake up run away", 310, 220, () -> showCrabImage());
     }
     private void showFourthLabel() {
-        addLabelToButton("Never touch me, otherwise you die", 425, 220, () -> showPearlImageAndLabel());
+        addLabelToButton("Never touch me, otherwise you die", 425, 220, () -> showStoneImage());
     }
 
     private void showPearlImageAndLabel() {
         Image pearlImage = new Image(new TextureRegionDrawable(new TextureRegion(pearlTexture)));
         pearlImage.setSize(50, 50);
-        pearlImage.setPosition(instructionsButton.getX() + 80, instructionsButton.getY() + 300);
+        pearlImage.setPosition(instructionsButton.getX() + 80, instructionsButton.getY() + 200);
         stage.addActor(pearlImage);
 
         animateImage(pearlImage, () -> showPearlLabel());
     }
 
     private void showPearlLabel() {
-        addLabelToButton("collect us to have additional", 510, 220, () -> showPearlLabel2());
+        addLabelToButton("collect us to have additional", 600, 220, () -> showPearlLabel2());
     }
     private void showPearlLabel2() {
-        addLabelToButton("opportunities", 540, 220, () -> showHaveFun());
+        addLabelToButton("opportunities", 630, 220, () -> showHaveFun());
     }
     private void showHaveFun(){
-        addLabelToButton("have fun!", 650, 400, ()-> showGoodLuck());
+        addLabelToButton("have fun!", 750, 400, ()-> showGoodLuck());
     }
     private void showGoodLuck(){
-        addLabelToButton("good luck!", 750, 400, ()->{});
+        addLabelToButton("good luck!", 800, 400, ()->{});
     }
+    private void showStoneImage() {
+        Image stoneImage = new Image(new TextureRegionDrawable(new TextureRegion(stoneTexture)));
+        stoneImage.setSize(50, 50);
+        stoneImage.setPosition(instructionsButton.getX() + 80, instructionsButton.getY() + 300);
+        stage.addActor(stoneImage);
+
+        animateImage(stoneImage, () -> showStoneLabel());
+    }
+    private void showStoneLabel() {
+        addLabelToButton("i`ll stab you to you death", 510, 220, () -> showStoneLabel2());
+    }
+    private void showStoneLabel2() {
+        addLabelToButton("if you crash into me", 540, 220, () ->showPearlImageAndLabel());
+    }
+
 
     private void animateImage(Image image, Runnable onComplete) {
         int distance = 20;

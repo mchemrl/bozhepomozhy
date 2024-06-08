@@ -143,13 +143,13 @@ public class Level3 implements Screen {
             if(enemy.getBoundingRectangle().overlaps(player.getBoundingRectangle())) {
                 if (enemy.isDeadly()) {
                     enemy.hit();
-                    ((Game) Gdx.app.getApplicationListener()).setScreen(new Levels());
+                    ((Game) Gdx.app.getApplicationListener()).setScreen(new LoseScreen(Level3.class));
                 }
             }
         }
         if (player.isCaught){
             System.out.println("You died");
-            ((Game) Gdx.app.getApplicationListener()).setScreen(new Levels());
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new LoseScreen(Level3.class));
         }
         //crab.draw(renderer.getBatch());
         for (Enemy enemy : enemies) {

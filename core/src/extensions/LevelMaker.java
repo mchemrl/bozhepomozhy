@@ -2,6 +2,7 @@ package extensions;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,11 +16,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import entities.Player;
-import screens.Levels;
-import screens.Settings;
-import screens.WinScreen;
+import screens.*;
 
 import java.awt.*;
+
+import static com.badlogic.gdx.Gdx.app;
 
 public class LevelMaker {
     private TiledMap map;
@@ -29,6 +30,7 @@ public class LevelMaker {
     private int playerStartY;
     private int winCoordinateX;
     private int winCoordinateY;
+    private Screen currentScreen;
     public static final int SIZE = 16;
     private Loader loader = new Loader();
 
@@ -63,7 +65,13 @@ public class LevelMaker {
 
 
     public void checkWinCondition(Player player) {
+
         if (player.getX() == winCoordinateX && player.getY() == winCoordinateY)
-            ((Game) Gdx.app.getApplicationListener()).setScreen(new WinScreen());
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new WinScreen(new Level1()));
+            if (currentScreen instanceof Level1) {
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new WinScreen(new Level1()));
+            } else if (currentScreen instanceof Level2) {
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new WinScreen(new Level2()));
+            }
     }
 }
