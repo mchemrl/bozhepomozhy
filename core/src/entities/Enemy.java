@@ -42,7 +42,7 @@ public class Enemy extends Sprite {
 
     public void update(float delta) {
         // Move the enemy
-        setX(getX() + delta * 60);
+        setX(getX());
     }
 
 }

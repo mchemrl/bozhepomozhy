@@ -80,7 +80,6 @@ public class Teeth extends Enemy {
 //    }
 
 
-
     public void move(int direction){
         if(direction == 1){
             setX(getX() - 1);

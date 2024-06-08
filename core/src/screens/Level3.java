@@ -87,6 +87,7 @@ public class Level3 implements Screen {
 //        crab5 = new Crab(new Sprite(crabTexture), (TiledMapTileLayer) map.getLayers().get(1), 0, 30);
 //        crab5.setPosition(53 * 16, 46 * 16);
 //        enemies.add(crab5);
+
         teeth = new Teeth(new Sprite(new Texture("img/enemies/teeth1.png")));
         teeth.setPosition(42 * 16, 19 * 16);
         enemies.add(teeth);
@@ -117,9 +118,9 @@ public class Level3 implements Screen {
         camera.position.set(player.getX() + player.getWidth() / 2, player.getY() + player.getWidth() / 2, 0);
         camera.update();
 
-//        for (Enemy enemy : enemies) {
-//            enemy.update(delta);
-//        }
+        for (Enemy enemy : enemies) {
+            enemy.update(delta);
+        }
 
         renderer.setView(camera);
         renderer.render();
