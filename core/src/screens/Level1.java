@@ -128,7 +128,6 @@ public class Level1 implements Screen {
         for (Enemy enemy : enemies) {
             if (enemy.getBoundingRectangle().overlaps(player.getBoundingRectangle())) {
                 if (enemy.isDeadly()) {
-                    System.out.println("You died");
                     ((Game) Gdx.app.getApplicationListener()).setScreen(new Levels());
                 }
             }
