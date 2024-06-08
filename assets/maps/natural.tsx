@@ -121,4 +121,14 @@
    <property name="blocked" value=""/>
   </properties>
  </tile>
+ <tile id="93">
+  <properties>
+   <property name="blocked" value=""/>
+  </properties>
+ </tile>
+ <tile id="94">
+  <properties>
+   <property name="blocked" value=""/>
+  </properties>
+ </tile>
 </tileset>
