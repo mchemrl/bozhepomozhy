@@ -26,10 +26,12 @@ public class Instructions implements Screen {
     private TextureAtlas atlas;
     private Skin skin;
     private TextButton instructionsButton;
-    private TextButton settingButton; // Додаємо кнопку налаштувань
-    BottomMenu bottomMenu;
+    private TextButton settingButton;
+    private BottomMenu bottomMenu;
     private Texture wTexture, aTexture, sTexture, dTexture;
-    private Texture teeth1Texture, teeth2Texture, teeth3Texture, teeth4Texture, teeth5Texture; // Додаємо текстури teeth
+    private Texture teeth1Texture, teeth2Texture, teeth3Texture, teeth4Texture, teeth5Texture;
+    private Texture crabMoving1Texture, crabMoving2Texture, crabMoving3Texture, crabMoving4Texture;
+    private Texture pearlTexture;
 
     @Override
     public void show() {
@@ -41,58 +43,31 @@ public class Instructions implements Screen {
         atlas = new TextureAtlas("ui/levels/buttons.txt");
         skin = new Skin(Gdx.files.internal("ui/levels/levelsSkin.json"), atlas);
 
-        // Завантаження текстур w.png, a.png, s.png, d.png, teeth
         wTexture = new Texture(Gdx.files.internal("img/w.png"));
         aTexture = new Texture(Gdx.files.internal("img/a.png"));
         sTexture = new Texture(Gdx.files.internal("img/s.png"));
         dTexture = new Texture(Gdx.files.internal("img/d.png"));
+
         teeth1Texture = new Texture(Gdx.files.internal("img/enemies/teeth1.png"));
         teeth2Texture = new Texture(Gdx.files.internal("img/enemies/teeth2.png"));
         teeth3Texture = new Texture(Gdx.files.internal("img/enemies/teeth3.png"));
         teeth4Texture = new Texture(Gdx.files.internal("img/enemies/teeth4.png"));
         teeth5Texture = new Texture(Gdx.files.internal("img/enemies/teeth5.png"));
 
+        crabMoving1Texture = new Texture(Gdx.files.internal("img/enemies/crabMoving1.png"));
+        crabMoving2Texture = new Texture(Gdx.files.internal("img/enemies/crabMoving2.png"));
+        crabMoving3Texture = new Texture(Gdx.files.internal("img/enemies/crabMoving3.png"));
+        crabMoving4Texture = new Texture(Gdx.files.internal("img/enemies/crabMoving4.png"));
+
+        pearlTexture = new Texture(Gdx.files.internal("img/pearl.png"));
+
         instructionsButton = new TextButton("", skin);
         instructionsButton.setSize(1000, 850);
         instructionsButton.setPosition(Gdx.graphics.getWidth() / 2 - instructionsButton.getWidth() / 2, Gdx.graphics.getHeight() / 2 - instructionsButton.getHeight() / 2 - 40);
 
-        // Додаємо картинки w, a, s, d
-        Image wImage = new Image(new TextureRegionDrawable(new TextureRegion(wTexture)));
-        Image aImage = new Image(new TextureRegionDrawable(new TextureRegion(aTexture)));
-        Image sImage = new Image(new TextureRegionDrawable(new TextureRegion(sTexture)));
-        Image dImage = new Image(new TextureRegionDrawable(new TextureRegion(dTexture)));
-        Image teethImage = new Image(new TextureRegionDrawable(new TextureRegion(teeth1Texture))); // Додаємо картинку teeth1.png
-
-        float imageSize = 50;
-        wImage.setSize(imageSize, imageSize);
-        aImage.setSize(imageSize, imageSize);
-        sImage.setSize(imageSize, imageSize);
-        dImage.setSize(imageSize, imageSize);
-        teethImage.setSize(imageSize, imageSize + 20);
-
-        float buttonX = instructionsButton.getX();
-        float buttonY = instructionsButton.getY();
-        float buttonHeight = instructionsButton.getHeight();
-
-        // Позиціонування картинок з більшими відступами
-        float offsetY = 40; // зсув вниз на 40 пікселів
-        float gap = 40; // більші відступи між кнопками
-
-        wImage.setPosition(buttonX + 75, buttonY - 40 + buttonHeight - wImage.getHeight() - offsetY);
-        aImage.setPosition(buttonX + 15, buttonY - 90 + buttonHeight - aImage.getHeight() - offsetY - gap);
-        sImage.setPosition(buttonX + 75, buttonY - 90 + buttonHeight - sImage.getHeight() - offsetY - gap);
-        dImage.setPosition(buttonX + 135, buttonY - 90 + buttonHeight - dImage.getHeight() - offsetY - gap);
-        teethImage.setPosition(buttonX +85, buttonY - 140 + buttonHeight - teethImage.getHeight() - offsetY - 2 * gap);
-
-        // Додаємо текст "press us to move your sprite"
-        addLabelToButton("press us to move your sprite");
-
-
-
         Label titleLabel = new Label("Instructions", skin);
-        titleLabel.setPosition(Gdx.graphics.getWidth() / 2 - titleLabel.getWidth() / 2, Gdx.graphics.getHeight() / 2 + instructionsButton.getHeight() / 2 + 20 - 40); // Зсув вниз на 40 пікселів
+        titleLabel.setPosition(Gdx.graphics.getWidth() / 2 - titleLabel.getWidth() / 2, Gdx.graphics.getHeight() / 2 + instructionsButton.getHeight() / 2 + 20 - 40);
 
-        // Додаємо кнопку налаштувань
         settingButton = new TextButton(" ", skin, "settingbutton");
         settingButton.addListener(new ClickListener() {
             @Override
@@ -103,81 +78,157 @@ public class Instructions implements Screen {
             }
         });
 
-        // Розміщуємо кнопку налаштувань на екрані
         Table topRightTable = new Table();
         topRightTable.setFillParent(true);
         topRightTable.top().right();
-        topRightTable.add(settingButton).width(70).height(70).pad(10); // Встановлюємо розмір тут
+        topRightTable.add(settingButton).width(70).height(70).pad(10);
 
         stage.addActor(instructionsButton);
-        stage.addActor(wImage);
-        stage.addActor(aImage);
-        stage.addActor(sImage);
-        stage.addActor(dImage);
-        stage.addActor(teethImage); // Додаємо teethImage на сцену
         stage.addActor(titleLabel);
-        stage.addActor(topRightTable); // Додаємо таблицю з кнопкою налаштувань
-
-        animateImagesInSequence(wImage, aImage, sImage, dImage, 20, 0.3f); // Запускаємо анімацію
-        animateTeethImage(teethImage); // Запускаємо анімацію teethImage
+        stage.addActor(topRightTable);
 
         bottomMenu = new BottomMenu(stage, skin,
-                () -> {
-                    // Action for shop button
-                    // Add your logic here
-                },
-                () -> {
-                    // Action for levels button
-                    // Add your logic here
-                },
-                () -> {
-                    // Action for instructions button
-                    // Add your logic here
-                }
+                () -> {},
+                () -> {},
+                () -> {}
         );
+
+        // Start the sequence
+        showWImage();
     }
 
-    private void animateImagesInSequence(Image wImage, Image aImage, Image sImage, Image dImage, int distance, float duration) {
-        wImage.addAction(Actions.sequence(
+    private void showWImage() {
+        Image wImage = new Image(new TextureRegionDrawable(new TextureRegion(wTexture)));
+        wImage.setSize(50, 50);
+        wImage.setPosition(instructionsButton.getX() + 75, instructionsButton.getY() + instructionsButton.getHeight() - wImage.getHeight() - 80);
+        stage.addActor(wImage);
+
+        animateImage(wImage, () -> showAImage());
+    }
+
+    private void showAImage() {
+        Image aImage = new Image(new TextureRegionDrawable(new TextureRegion(aTexture)));
+        aImage.setSize(50, 50);
+        aImage.setPosition(instructionsButton.getX() + 15, instructionsButton.getY() + instructionsButton.getHeight() - aImage.getHeight() - 90 - 40);
+        stage.addActor(aImage);
+
+        animateImage(aImage, () -> showSImage());
+    }
+
+    private void showSImage() {
+        Image sImage = new Image(new TextureRegionDrawable(new TextureRegion(sTexture)));
+        sImage.setSize(50, 50);
+        sImage.setPosition(instructionsButton.getX() + 75, instructionsButton.getY() + instructionsButton.getHeight() - sImage.getHeight() - 90 - 40);
+        stage.addActor(sImage);
+
+        animateImage(sImage, () -> showDImage());
+    }
+
+    private void showDImage() {
+        Image dImage = new Image(new TextureRegionDrawable(new TextureRegion(dTexture)));
+        dImage.setSize(50, 50);
+        dImage.setPosition(instructionsButton.getX() + 135, instructionsButton.getY() + instructionsButton.getHeight() - dImage.getHeight() - 90 - 40);
+        stage.addActor(dImage);
+
+        animateImage(dImage, () -> showFirstLabel());
+    }
+
+
+
+    private void showFirstLabel() {
+        addLabelToButton("press us to move your sprite", 150, 220, () -> showTeethImage());
+    }
+    private void showTeethImage() {
+        Image teethImage = new Image(new TextureRegionDrawable(new TextureRegion(teeth1Texture)));
+        teethImage.setSize(50, 70);
+        teethImage.setPosition(instructionsButton.getX() + 85, instructionsButton.getY() + instructionsButton.getHeight() - teethImage.getHeight() - 140 - 40 - 80);
+        stage.addActor(teethImage);
+
+        animateTeethImage(teethImage, () -> showSecondLabel());
+    }
+    private void showSecondLabel() {
+        addLabelToButton("you can touch me if i sleep,", 280, 220, () -> showThirdLabel());
+    }
+
+    private void showThirdLabel() {
+        addLabelToButton("but when i wake up run away", 310, 220, () -> showCrabImage());
+    }
+    private void showFourthLabel() {
+        addLabelToButton("Never touch me, otherwise you die", 425, 220, () -> showPearlImageAndLabel());
+    }
+
+    private void showPearlImageAndLabel() {
+        Image pearlImage = new Image(new TextureRegionDrawable(new TextureRegion(pearlTexture)));
+        pearlImage.setSize(50, 50);
+        pearlImage.setPosition(instructionsButton.getX() + 80, instructionsButton.getY() + 300);
+        stage.addActor(pearlImage);
+
+        animateImage(pearlImage, () -> showPearlLabel());
+    }
+
+    private void showPearlLabel() {
+        addLabelToButton("collect us to have additional", 510, 220, () -> showPearlLabel2());
+    }
+    private void showPearlLabel2() {
+        addLabelToButton("opportunities", 540, 220, () -> showHaveFun());
+    }
+    private void showHaveFun(){
+        addLabelToButton("have fun!", 650, 400, ()-> showGoodLuck());
+    }
+    private void showGoodLuck(){
+        addLabelToButton("good luck!", 750, 400, ()->{});
+    }
+
+    private void animateImage(Image image, Runnable onComplete) {
+        int distance = 20;
+        float duration = 0.2f;
+
+        image.addAction(Actions.sequence(
                 Actions.moveBy(0, distance, duration),
                 Actions.moveBy(0, -distance, duration),
-                Actions.run(() -> aImage.addAction(Actions.sequence(
-                        Actions.moveBy(0, distance, duration),
-                        Actions.moveBy(0, -distance, duration),
-                        Actions.run(() -> sImage.addAction(Actions.sequence(
-                                Actions.moveBy(0, distance, duration),
-                                Actions.moveBy(0, -distance, duration),
-                                Actions.run(() -> dImage.addAction(Actions.sequence(
-                                        Actions.moveBy(0, distance, duration),
-                                        Actions.moveBy(0, -distance, duration)
-                                )))
-                        )))
-                )))
+                Actions.run(onComplete)
         ));
     }
 
-    private void animateTeethImage(Image teethImage) {
+    private void animateTeethImage(Image teethImage, Runnable onComplete) {
         teethImage.addAction(Actions.sequence(
-                Actions.delay(0.5f), // Затримка перед початком анімації
-                Actions.run(() -> teethImage.setDrawable(new TextureRegionDrawable(new TextureRegion(teeth2Texture)))), // Зміна на teeth2.png
-                Actions.delay(0.5f), // Затримка перед наступною зміною
-                Actions.run(() -> teethImage.setDrawable(new TextureRegionDrawable(new TextureRegion(teeth3Texture)))), // Зміна на teeth3.png
-                Actions.delay(0.5f), // Затримка перед наступною зміною
-                Actions.run(() -> teethImage.setDrawable(new TextureRegionDrawable(new TextureRegion(teeth4Texture)))), // Зміна на teeth4.png
-                Actions.delay(0.5f), // Затримка перед наступною зміною
-                Actions.run(() -> teethImage.setDrawable(new TextureRegionDrawable(new TextureRegion(teeth5Texture)))) // Зміна на teeth5.png
+                Actions.delay(0.2f),
+                Actions.run(() -> teethImage.setDrawable(new TextureRegionDrawable(new TextureRegion(teeth2Texture)))),
+                Actions.delay(0.2f),
+                Actions.run(() -> teethImage.setDrawable(new TextureRegionDrawable(new TextureRegion(teeth3Texture)))),
+                Actions.delay(0.2f),
+                Actions.run(() -> teethImage.setDrawable(new TextureRegionDrawable(new TextureRegion(teeth4Texture)))),
+                Actions.delay(0.2f),
+                Actions.run(() -> teethImage.setDrawable(new TextureRegionDrawable(new TextureRegion(teeth5Texture)))),
+                Actions.run(onComplete)
+        ));
+    }
+    private void showCrabImage() {
+        Image crabImage = new Image(new TextureRegionDrawable(new TextureRegion(crabMoving1Texture)));
+        crabImage.setSize(70, 70);
+        crabImage.setPosition(instructionsButton.getX() +70, instructionsButton.getY() + instructionsButton.getHeight() - crabImage.getHeight() - 140 - 40 - 200);
+        stage.addActor(crabImage);
+
+        animateCrabImage(crabImage, () -> showFourthLabel());
+    }
+
+    private void animateCrabImage(Image crabImage, Runnable onComplete) {
+        crabImage.addAction(Actions.sequence(
+                Actions.delay(0.2f),
+                Actions.run(() -> crabImage.setDrawable(new TextureRegionDrawable(new TextureRegion(crabMoving2Texture)))),
+                Actions.delay(0.2f),
+                Actions.run(() -> crabImage.setDrawable(new TextureRegionDrawable(new TextureRegion(crabMoving3Texture)))),
+                Actions.delay(0.2f),
+                Actions.run(() -> crabImage.setDrawable(new TextureRegionDrawable(new TextureRegion(crabMoving4Texture)))),
+                Actions.run(onComplete)
         ));
     }
 
-    private void addLabelToButton(String labelText) {
-        // Видаляємо попередні написи на кнопці
-        instructionsButton.clearChildren();
-
-        // Додаємо новий напис на кнопку з зсувом вниз на 200 пікселів
+    private void addLabelToButton(String labelText, float y, float x, Runnable onComplete) {
         Label label = new Label("", skin);
-        instructionsButton.add(label).expand().top().right().padTop(150).padRight(60);
+        label.setPosition(instructionsButton.getX() + x, instructionsButton.getY() + instructionsButton.getHeight() - label.getHeight() - y);
+        stage.addActor(label);
 
-        // Паралельно з анімацією картинок змінюємо текст по одній літері
         new Thread(() -> {
             for (int i = 0; i <= labelText.length(); i++) {
                 final int index = i;
@@ -187,22 +238,13 @@ public class Instructions implements Screen {
                     }
                 });
                 try {
-                    Thread.sleep(100); // Затримка в мілісекундах
+                    Thread.sleep(50);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
+            Gdx.app.postRunnable(onComplete);
         }).start();
-    }
-
-    private void addSlidingLabel(String labelText) {
-        Label slidingLabel = new Label(labelText, skin);
-        slidingLabel.setPosition(-slidingLabel.getWidth(), Gdx.graphics.getHeight() / 2 - instructionsButton.getHeight() / 2 - 60); // Початкова позиція поза екраном зліва
-
-        stage.addActor(slidingLabel);
-
-        // Анімація виїзду зліва направо
-        slidingLabel.addAction(Actions.moveTo(Gdx.graphics.getWidth() / 2 - slidingLabel.getWidth() / 2, Gdx.graphics.getHeight() / 2 - instructionsButton.getHeight() / 2 - 60, 2.0f)); // Зсув вниз на 60 пікселів
     }
 
     @Override
@@ -224,7 +266,6 @@ public class Instructions implements Screen {
 
     @Override
     public void resume() {}
-
     @Override
     public void hide() {}
 
@@ -241,5 +282,10 @@ public class Instructions implements Screen {
         teeth3Texture.dispose();
         teeth4Texture.dispose();
         teeth5Texture.dispose();
+        crabMoving1Texture.dispose();
+        crabMoving2Texture.dispose();
+        crabMoving3Texture.dispose();
+        crabMoving4Texture.dispose();
+        pearlTexture.dispose();
     }
 }
