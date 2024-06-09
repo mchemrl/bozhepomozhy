@@ -45,7 +45,7 @@ public class Level3 implements Screen {
     @Override
     public void show() {
         deathSound = Gdx.audio.newSound(Gdx.files.internal("sounds/death.ogg"));
-        levelMaker = new LevelMaker("maps/level3.tmx", 40*LevelMaker.SIZE, 18*LevelMaker.SIZE, 847, 480);
+        levelMaker = new LevelMaker("maps/level3.tmx", 40*LevelMaker.SIZE, 18*LevelMaker.SIZE, 847, 480, Level3.class, Level3.class);
 
         mapMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/megalovania.wav"));
         levelMaker.setMusic(mapMusic);
@@ -165,7 +165,7 @@ public class Level3 implements Screen {
         progressLabel.updatePoints(collectedCoins);
 
         System.out.println(player.getX());
-        // Draw the stage
+
         stage.act(delta);
         stage.draw();
     }
