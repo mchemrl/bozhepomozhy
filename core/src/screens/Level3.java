@@ -47,7 +47,7 @@ public class Level3 implements Screen {
         deathSound = Gdx.audio.newSound(Gdx.files.internal("sounds/death.ogg"));
         levelMaker = new LevelMaker("maps/level3.tmx", 40*LevelMaker.SIZE, 18*LevelMaker.SIZE, 54*16, 28*16);
 
-        mapMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/bonetrousle.wav"));
+        mapMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/megalovania.wav"));
         levelMaker.setMusic(mapMusic);
 
         map = levelMaker.loadMap();
@@ -67,14 +67,14 @@ public class Level3 implements Screen {
 
         Texture crabTexture = new Texture("img/enemies/CrabMoving1.png");
 
-//        crab = new Crab(new Sprite(crabTexture), (TiledMapTileLayer) map.getLayers().get(1), 0, 30);
-//        crab.setPosition(44 * 16, 20 * 16);
-//        enemies.add(crab);
-//
-//        crab2 = new Crab(new Sprite(crabTexture), (TiledMapTileLayer) map.getLayers().get(1), 30, 0);
-//        crab2.setPosition(44 * 16, 35 * 16);
-//        enemies.add(crab2);
-//
+        crab = new Crab(new Sprite(crabTexture), (TiledMapTileLayer) map.getLayers().get(1), 0, 30);
+        crab.setPosition(43 * 16, 21 * 16);
+        enemies.add(crab);
+
+        crab2 = new Crab(new Sprite(crabTexture), (TiledMapTileLayer) map.getLayers().get(1), 30, 0);
+        crab2.setPosition(43 * 16, 36 * 16);
+        enemies.add(crab2);
+
 //        crab3 = new Crab(new Sprite(crabTexture), (TiledMapTileLayer) map.getLayers().get(1), 0, 30);
 //        crab3.setPosition(47 * 16, 38 * 16);
 //        enemies.add(crab3);
@@ -85,7 +85,7 @@ public class Level3 implements Screen {
 //
 //        crab5 = new Crab(new Sprite(crabTexture), (TiledMapTileLayer) map.getLayers().get(1), 0, 30);
 //        crab5.setPosition(53 * 16, 46 * 16);
-//        enemies.add(crab5);
+      //  enemies.add(crab5);
 
         teeth = new Teeth(new Sprite(new Texture("img/enemies/teeth1.png")));
         teeth.setPosition(42 * 16, 19 * 16);
@@ -141,6 +141,8 @@ public class Level3 implements Screen {
         for (Enemy enemy : enemies) {
             if(enemy.getBoundingRectangle().overlaps(player.getBoundingRectangle())) {
                 if (enemy.isDeadly()) {
+                    if(!Settings.soundDisabled)
+                    deathSound = Gdx.audio.newSound(Gdx.files.internal("sounds/death.ogg"));
                     enemy.hit();
                     ((Game) Gdx.app.getApplicationListener()).setScreen(new LoseScreen(Level3.class));
                 }
@@ -192,8 +194,8 @@ public class Level3 implements Screen {
         renderer.dispose();
         player.getTexture().dispose();
 
-//        crab.getTexture().dispose();
-//        crab2.getTexture().dispose();
+        crab.getTexture().dispose();
+        crab2.getTexture().dispose();
 //        crab3.getTexture().dispose();
 //        crab4.getTexture().dispose();
 //        crab5.getTexture().dispose();

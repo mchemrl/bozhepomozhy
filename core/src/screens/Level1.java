@@ -3,6 +3,7 @@ package screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -46,6 +47,7 @@ public class Level1 implements Screen {
     private Label pointsLabel;
     private Texture pearlTexture;
     private ProgressLabel progressLabel;
+    private Sound deathSound;
 
     @Override
     public void show() {
@@ -53,6 +55,7 @@ public class Level1 implements Screen {
 
         mapMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/deathbyglamour.wav"));
         levelMaker.setMusic(mapMusic);
+        deathSound = Gdx.audio.newSound(Gdx.files.internal("sounds/death.ogg"));
 
         map = levelMaker.loadMap();
         renderer = new OrthogonalTiledMapRenderer(map);
@@ -128,6 +131,8 @@ public class Level1 implements Screen {
         for (Enemy enemy : enemies) {
             if (enemy.getBoundingRectangle().overlaps(player.getBoundingRectangle())) {
                 if (enemy.isDeadly()) {
+                    if(!Settings.soundDisabled)
+                        deathSound.play();
                     ((Game) Gdx.app.getApplicationListener()).setScreen(new LoseScreen(Level1.class));
                 }
             }
