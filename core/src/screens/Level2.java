@@ -45,7 +45,7 @@ public class Level2 implements Screen {
     @Override
     public void show() {
         deathSound = Gdx.audio.newSound(Gdx.files.internal("sounds/death.ogg"));
-        levelMaker = new LevelMaker("maps/level2.tmx", 46*LevelMaker.SIZE, 18*LevelMaker.SIZE, 575, 591, Level2.class, Level3.class);
+        levelMaker = new LevelMaker("maps/level2.tmx", 46*LevelMaker.SIZE, 18*LevelMaker.SIZE, 575, 591);
 
         mapMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/bonetrousle.wav"));
         levelMaker.setMusic(mapMusic);
@@ -121,7 +121,7 @@ public class Level2 implements Screen {
         }
         if (player.isCaught){
             System.out.println("You died");
-            ((Game) Gdx.app.getApplicationListener()).setScreen(new LoseScreen(Level2.class));
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new Levels());
         }
         //crab.draw(renderer.getBatch());
         for (Enemy enemy : enemies) {

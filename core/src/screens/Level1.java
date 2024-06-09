@@ -47,7 +47,7 @@ public class Level1 implements Screen {
 
     @Override
     public void show() {
-        levelMaker = new LevelMaker("maps/nature1.tmx", 38 * LevelMaker.SIZE, 18 * LevelMaker.SIZE, 607, 719, Level1.class, Level2.class);
+        levelMaker = new LevelMaker("maps/nature1.tmx", 38 * LevelMaker.SIZE, 18 * LevelMaker.SIZE, 607, 719);
 
         mapMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/deathbyglamour.wav"));
         levelMaker.setMusic(mapMusic);

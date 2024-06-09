@@ -83,7 +83,7 @@ public class ShopScreen implements Screen {
         stage.addActor(spriteButton3);
 
         spriteButton.addListener(new PurchaseClickListener(0)); // Free item, cost is 0
-        spriteButton2.addListener(new PurchaseClickListener(0));
+        spriteButton2.addListener(new PurchaseClickListener(20));
         spriteButton3.addListener(new PurchaseClickListener(40));
 
         progressLabel = new ProgressLabel();
