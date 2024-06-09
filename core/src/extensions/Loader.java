@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class Loader {
 
-    public boolean loadMusicSettings(){
+    public boolean loadMusicSettings() {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(new File("core/src/extensions/settings.txt")));
             String line = reader.readLine();
@@ -18,10 +18,11 @@ public class Loader {
             return false;
         }
     }
-    public boolean loadSoundSettings(){
+
+    public boolean loadSoundSettings() {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(new File("core/src/extensions/settings.txt")));
-            reader.readLine();
+            reader.readLine(); // Пропускаємо перший рядок
             String secondLine = reader.readLine();
             reader.close();
             return Boolean.parseBoolean(secondLine);
@@ -31,16 +32,32 @@ public class Loader {
         }
     }
 
-    public static int loadProgress(){
-        try{
+    public static int loadProgress() {
+        try {
             BufferedReader reader = new BufferedReader(new FileReader(new File("core/src/extensions/progress.txt")));
             int coins = Integer.parseInt(reader.readLine());
             reader.close();
             return coins;
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return 0;
         }
+    }
+
+    public static boolean[] loadLevelSettings() {
+        boolean[] levelSettings = new boolean[3];
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(new File("core/src/extensions/settings.txt")));
+            reader.readLine();
+            reader.readLine();
+            for (int i = 0; i < 3; i++) {
+                levelSettings[i] = Boolean.parseBoolean(reader.readLine());
+            }
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return levelSettings;
     }
 
 }

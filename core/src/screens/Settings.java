@@ -69,7 +69,7 @@ public class Settings implements Screen {
                     //Levels.buttonClickSound.setVolume(1,1);
                    // buttonClickSound.setVolume(0,1);
                 }
-                Saver.saveSettings(musicDisabled, soundDisabled);
+                Saver.saveSettings(musicDisabled, soundDisabled, Loader.loadLevelSettings());
             }
         });
 
@@ -86,7 +86,7 @@ public class Settings implements Screen {
                     musicDisabled = false;
                     MainMenu.menuMusic.play();
                 }
-                Saver.saveSettings(musicDisabled, soundDisabled);
+                Saver.saveSettings(musicDisabled, soundDisabled, Loader.loadLevelSettings());
             }
         });
 
