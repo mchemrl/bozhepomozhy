@@ -45,7 +45,7 @@ public class Level3 implements Screen {
     @Override
     public void show() {
         deathSound = Gdx.audio.newSound(Gdx.files.internal("sounds/death.ogg"));
-        levelMaker = new LevelMaker("maps/level3.tmx", 40*LevelMaker.SIZE, 18*LevelMaker.SIZE, 54*16, 28*16);
+        levelMaker = new LevelMaker("maps/level3.tmx", 40*LevelMaker.SIZE, 18*LevelMaker.SIZE, 847, 480);
 
         mapMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/megalovania.wav"));
         levelMaker.setMusic(mapMusic);
@@ -67,25 +67,25 @@ public class Level3 implements Screen {
 
         Texture crabTexture = new Texture("img/enemies/CrabMoving1.png");
 
-        crab = new Crab(new Sprite(crabTexture), (TiledMapTileLayer) map.getLayers().get(1), 0, 30);
-        crab.setPosition(43 * 16, 21 * 16);
+        crab = new Crab(new Sprite(crabTexture), (TiledMapTileLayer) map.getLayers().get(1), 30, 0);
+        crab.setPosition(42 * 16, 21 * 16);
         enemies.add(crab);
 
         crab2 = new Crab(new Sprite(crabTexture), (TiledMapTileLayer) map.getLayers().get(1), 30, 0);
-        crab2.setPosition(43 * 16, 36 * 16);
+        crab2.setPosition(43 * 16, 34 * 16);
         enemies.add(crab2);
 
-//        crab3 = new Crab(new Sprite(crabTexture), (TiledMapTileLayer) map.getLayers().get(1), 0, 30);
-//        crab3.setPosition(47 * 16, 38 * 16);
-//        enemies.add(crab3);
-//
-//        crab4 = new Crab(new Sprite(crabTexture), (TiledMapTileLayer) map.getLayers().get(1), 0, 30);
-//        crab4.setPosition(46 * 16, 46 * 16);
-//        enemies.add(crab4);
-//
-//        crab5 = new Crab(new Sprite(crabTexture), (TiledMapTileLayer) map.getLayers().get(1), 0, 30);
-//        crab5.setPosition(53 * 16, 46 * 16);
-      //  enemies.add(crab5);
+        crab3 = new Crab(new Sprite(crabTexture), (TiledMapTileLayer) map.getLayers().get(1), 0, 30);
+        crab3.setPosition(46 * 16, 37 * 16);
+        enemies.add(crab3);
+
+        crab4 = new Crab(new Sprite(crabTexture), (TiledMapTileLayer) map.getLayers().get(1), 0, 30);
+        crab4.setPosition(44.5f * 16, 44* 16);
+        enemies.add(crab4);
+
+        crab5 = new Crab(new Sprite(crabTexture), (TiledMapTileLayer) map.getLayers().get(1), 0, 30);
+        crab5.setPosition(51.5f * 16, 45 * 16);
+        enemies.add(crab5);
 
         teeth = new Teeth(new Sprite(new Texture("img/enemies/teeth1.png")));
         teeth.setPosition(42 * 16, 19 * 16);
@@ -104,7 +104,7 @@ public class Level3 implements Screen {
         enemies.add(teeth5);
 
 
-        coins.fill(map, 1);
+       coins.fill(map, 2);
 
         Gdx.input.setInputProcessor(player);
     }
@@ -143,7 +143,10 @@ public class Level3 implements Screen {
                 if (enemy.isDeadly()) {
                     if(!Settings.soundDisabled)
                     deathSound = Gdx.audio.newSound(Gdx.files.internal("sounds/death.ogg"));
-                    enemy.hit();
+                    //enemy.hit();
+                    System.out.println(player.getX());
+                    System.out.println(player.getY());
+                    System.out.println(enemy.getX()+enemy.getWidth()+ " enemy "+ enemy.getY()+enemy.getHeight());
                     ((Game) Gdx.app.getApplicationListener()).setScreen(new LoseScreen(Level3.class));
                 }
             }
@@ -160,6 +163,8 @@ public class Level3 implements Screen {
 
         levelMaker.checkWinCondition(player);
         progressLabel.updatePoints(collectedCoins);
+
+        System.out.println(player.getX());
         // Draw the stage
         stage.act(delta);
         stage.draw();
@@ -193,12 +198,6 @@ public class Level3 implements Screen {
         map.dispose();
         renderer.dispose();
         player.getTexture().dispose();
-
-        crab.getTexture().dispose();
-        crab2.getTexture().dispose();
-//        crab3.getTexture().dispose();
-//        crab4.getTexture().dispose();
-//        crab5.getTexture().dispose();
         enemies.forEach(enemy -> enemy.getTexture().dispose());
         mapMusic.dispose();
         coins.getTexture().dispose();

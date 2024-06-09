@@ -21,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import entities.*;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.InputMultiplexer;
 import extensions.LevelMaker;
 import extensions.Loader;
 import extensions.Saver;
@@ -29,23 +30,18 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-
 public class Level1 implements Screen {
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
     private Player player;
-    private Crab crab;
     private Music mapMusic;
     private LevelMaker levelMaker;
     List<Enemy> enemies = new ArrayList<>();
-    private Crab crab2;
     private Teeth teeth, teeth2, teeth4, teeth3;
     private final Coins coins = new Coins();
     private int collectedCoins = 0;
     private Stage stage;
-    private Label pointsLabel;
-    private Texture pearlTexture;
     private ProgressLabel progressLabel;
     private Sound deathSound;
 
@@ -62,8 +58,6 @@ public class Level1 implements Screen {
         camera = new OrthographicCamera();
 
         stage = new Stage();
-        Gdx.input.setInputProcessor(stage);
-
         progressLabel = new ProgressLabel();
         stage.addActor(progressLabel);
 
@@ -82,24 +76,10 @@ public class Level1 implements Screen {
         teeth4.setPosition(34 * 16, 41 * 16);
         enemies.add(teeth4);
 
-//        coins.addRow(26 * 16, 35.5f * 16, 23.5f * 16, 23.5f * 16);
-//        coins.addRow(37 * 16, 42.5f * 16, 17 * 16, 17 * 16);
-//        coins.addRow(42.5f * 16, 42.5f * 16, 18 * 16, 23.5f * 16);
-//        coins.addRow(40 * 16, 41.5f * 16, 23.5f* 16, 23.5f * 16);
-//        coins.addRow(35*16, 41*16,22*16,22*16);
-//        coins.addRow(26*16,29.5f*16,20*16,20*16);
-//        coins.addRow(29.5f*16,29.5f*16,21*16,28.5f*16);
-//        coins.addRow(30.5f*16,33.5f*16,28*16, 28*16);
-//        coins.addRow(38*16,38*16,26*16,33*16);
-//        coins.addRow(34*16,34*16,31*16,33*16);
-//        coins.addRow(35.5f*16,35.5f*16,31*16,41*16);
-//        coins.addRow(34*16,34*16,38*16,41*16);
-//        coins.addRow(36.5f*16,38.5f*16,41*16,41*16);
-//        coins.addRow(38.5f*16,38.5f*16,41*16,43*16);
-        coins.fill(map, 0);
+        coins.fill(map, 1);
 
-
-        Gdx.input.setInputProcessor(player);
+        InputMultiplexer inputMultiplexer = new InputMultiplexer(stage, player);
+        Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
     @Override
@@ -107,9 +87,10 @@ public class Level1 implements Screen {
         Gdx.gl.glClearColor(0.431f, 0.8f, 0.788f, 1); //pretty blue colour
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        camera.position.set(player.getX() + player.getWidth() / 2, player.getY() + player.getWidth() / 2, 0);
+        camera.position.set(Math.max(camera.viewportWidth / 2, Math.min(player.getX() + player.getWidth() / 2, map.getProperties().get("width", Integer.class) * LevelMaker.SIZE - camera.viewportWidth / 2)),
+                Math.max(camera.viewportHeight / 2, Math.min(player.getY() + player.getHeight() / 2, map.getProperties().get("height", Integer.class) * LevelMaker.SIZE - camera.viewportHeight / 2)),
+                0);
         camera.update();
-
 
         renderer.setView(camera);
         renderer.render();
@@ -117,30 +98,34 @@ public class Level1 implements Screen {
         player.draw(renderer.getBatch());
 
         Iterator<Coin> coinIterator = coins.getCoinRow().iterator();
+        List<Coin> coinsToRemove = new ArrayList<>();
         while (coinIterator.hasNext()) {
             Coin coin = coinIterator.next();
             if (coin.getBoundingRectangle().overlaps(player.getBoundingRectangle())) {
-                coinIterator.remove();
+                coinsToRemove.add(coin);
                 collectedCoins++;
                 Saver.saveProgress(1 + Loader.loadProgress());
             } else {
                 coin.draw(renderer.getBatch());
             }
         }
+        coins.getCoinRow().removeAll(coinsToRemove);
 
         for (Enemy enemy : enemies) {
             if (enemy.getBoundingRectangle().overlaps(player.getBoundingRectangle())) {
                 if (enemy.isDeadly()) {
-                    if(!Settings.soundDisabled)
+                    if (!Settings.soundDisabled)
                         deathSound.play();
                     ((Game) Gdx.app.getApplicationListener()).setScreen(new LoseScreen(Level1.class));
                 }
             }
         }
+
         if (player.isCaught) {
             System.out.println("You died");
             ((Game) Gdx.app.getApplicationListener()).setScreen(new Levels());
         }
+
         for (Enemy enemy : enemies) {
             enemy.draw(renderer.getBatch());
         }
@@ -149,6 +134,7 @@ public class Level1 implements Screen {
         levelMaker.checkWinCondition(player);
 
         progressLabel.updatePoints(collectedCoins);
+
         // Draw the stage
         stage.act(delta);
         stage.draw();
@@ -163,14 +149,10 @@ public class Level1 implements Screen {
     }
 
     @Override
-    public void pause() {
-
-    }
+    public void pause() {}
 
     @Override
-    public void resume() {
-
-    }
+    public void resume() {}
 
     @Override
     public void hide() {
@@ -182,11 +164,12 @@ public class Level1 implements Screen {
         map.dispose();
         renderer.dispose();
         player.getTexture().dispose();
+        deathSound.dispose();
 
-        teeth.getTexture().dispose();
-        teeth2.getTexture().dispose();
-        teeth3.getTexture().dispose();
-        teeth4.getTexture().dispose();
+        for (Enemy enemy : enemies) {
+            enemy.getTexture().dispose();
+        }
+
         coins.getTexture().dispose();
         mapMusic.dispose();
         progressLabel.dispose();

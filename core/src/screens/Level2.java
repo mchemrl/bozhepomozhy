@@ -45,7 +45,7 @@ public class Level2 implements Screen {
     @Override
     public void show() {
         deathSound = Gdx.audio.newSound(Gdx.files.internal("sounds/death.ogg"));
-        levelMaker = new LevelMaker("maps/level2.tmx", 40*LevelMaker.SIZE, 18*LevelMaker.SIZE, 575, 591);
+        levelMaker = new LevelMaker("maps/level2.tmx", 46*LevelMaker.SIZE, 18*LevelMaker.SIZE, 575, 591);
 
         mapMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/bonetrousle.wav"));
         levelMaker.setMusic(mapMusic);
@@ -59,8 +59,7 @@ public class Level2 implements Screen {
         progressLabel = new ProgressLabel();
         stage.addActor(progressLabel);
 
-        player = new Player(new Sprite(new Texture("img/player.png")), (TiledMapTileLayer) map.getLayers().get(1));
-        player.setPosition(player.getX() + 40 * 16, player.getY() + 18 * 16);
+        player = levelMaker.createPlayer((TiledMapTileLayer) map.getLayers().get(1));
 
         crab = new Crab(new Sprite(new Texture("img/enemies/CrabMoving1.png")), (TiledMapTileLayer) map.getLayers().get(1), 0, 30);
         crab.setPosition(36*16,17*16);
@@ -77,7 +76,7 @@ public class Level2 implements Screen {
         crab5 = new Crab(new Sprite(new Texture("img/enemies/CrabMoving1.png")), (TiledMapTileLayer) map.getLayers().get(1), 30, 0);
         crab5.setPosition(23*16,38.5f*16);
         enemies.add(crab5);
-        coins.fill(map, 1);
+        coins.fill(map, 2);
 
 
         Gdx.input.setInputProcessor(player);

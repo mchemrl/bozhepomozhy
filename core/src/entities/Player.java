@@ -50,7 +50,7 @@ public class Player extends Sprite implements InputProcessor {
         float oldX = getX(), oldY = getY(), tileWidth = collisionLayer.getTileWidth(), tileHeight = collisionLayer.getTileHeight();
         int pixelsToMove = (int) (speed * delta);
 
-        for (int i = 0; i < pixelsToMove; i++) {
+        for (int i = 0; i <pixelsToMove; i++) {
             if (velocity.x != 0) {
                 setX(getX() + Math.signum(velocity.x));
 
@@ -60,6 +60,7 @@ public class Player extends Sprite implements InputProcessor {
                     isCaught = collisionLayer.getCell((int) ((getX()) / tileWidth), (int) ((getY() + getHeight() / 2) / tileHeight)).getTile().getProperties().containsKey("deadly");
                     if (collisionX) {
                         setRotation(270);
+
                     }
                 } else {
                     collisionX = collisionLayer.getCell((int) ((getX() + getWidth()) / tileWidth), (int) ((getY() + getHeight() / 2) / tileHeight)).getTile().getProperties().containsKey("blocked");
