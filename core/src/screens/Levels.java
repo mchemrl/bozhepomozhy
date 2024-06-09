@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import extensions.Loader;
+import extensions.Saver;
 import tween.ActorAccessor;
 
 public class Levels implements Screen {
@@ -32,8 +33,7 @@ public class Levels implements Screen {
     private TextureAtlas atlas;
     private TweenManager tweenManager;
     public static Sound buttonClickSound;
-    private boolean level1Passed;
-    private boolean level2Passed;
+    private boolean[] levelProgress;
     private BottomMenu bottomMenu;
     private ProgressLabel progressLabel;
 
@@ -41,6 +41,12 @@ public class Levels implements Screen {
     public void show() {
         stage = new Stage();
         Loader loader = new Loader();
+        levelProgress = loader.loadLevelSettings();
+
+        // Додамо відлагоджувальні повідомлення
+        System.out.println("Level 1 passed: " + levelProgress[0]);
+        System.out.println("Level 2 passed: " + levelProgress[1]);
+        System.out.println("Level 3 passed: " + levelProgress[2]);
 
         Gdx.input.setInputProcessor(stage);
 
@@ -69,26 +75,34 @@ public class Levels implements Screen {
                 MainMenu.menuMusic.stop();
                 if(!Settings.soundDisabled) buttonClickSound.play();
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new Level1());
+                levelProgress[0] = true;
+                Saver.saveLevelProgress(levelProgress);
             }
         });
 
         level2Button = new TextButton("2", skin, "levelbutton");
+        level2Button.setDisabled(!levelProgress[0]);
         level2Button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if(!Settings.soundDisabled) buttonClickSound.play();
                 MainMenu.menuMusic.stop();
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new Level2());
+                levelProgress[1] = true;
+                Saver.saveLevelProgress(levelProgress);
             }
         });
 
         level3Button = new TextButton("3", skin, "levelbutton");
+        level3Button.setDisabled(!levelProgress[1]);
         level3Button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if(!Settings.soundDisabled) buttonClickSound.play();
                 MainMenu.menuMusic.stop();
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new Level3());
+                levelProgress[2] = true;
+                Saver.saveLevelProgress(levelProgress);
             }
         });
 
@@ -124,7 +138,6 @@ public class Levels implements Screen {
         table.add(level1Button).width(100).height(50).pad(20);
         table.add(level2Button).width(100).height(50).pad(20);
         table.add(level3Button).width(100).height(50).pad(20);
-
 
         Table topRightTable = new Table();
         topRightTable.setFillParent(true);
