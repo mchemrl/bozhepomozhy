@@ -4,25 +4,15 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import entities.Player;
-import screens.*;
-
-import java.awt.*;
-
-import static com.badlogic.gdx.Gdx.app;
-import java.util.HashMap;
-import java.util.Map;
+import screens.Settings;
+import screens.ShopScreen;
+import screens.WinScreen;
 
 public class LevelMaker {
     private TiledMap map;
@@ -54,7 +44,25 @@ public class LevelMaker {
     }
 
     public Player createPlayer(TiledMapTileLayer collisionLayer) {
-        this.player = new Player(new Sprite(new Texture("img/player.png")), collisionLayer);
+        String selectedHeroName = ShopScreen.getSelectedHeroName();
+        Texture playerTexture;
+
+        switch (selectedHeroName) {
+            case "Hello Kitty":
+                playerTexture = new Texture(Gdx.files.internal("img/hellokittysmall.png"));
+                break;
+            case "Hello World":
+                playerTexture = new Texture(Gdx.files.internal("img/helloworldsmall.png"));
+                break;
+            case "Princess":
+                playerTexture = new Texture(Gdx.files.internal("img/princesssmall.png"));
+                break;
+            default:
+                playerTexture = new Texture(Gdx.files.internal("img/player.png")); // Default texture
+                break;
+        }
+
+        this.player = new Player(new Sprite(playerTexture), collisionLayer);
         this.player.setPosition(playerStartX, playerStartY);
         return this.player;
     }

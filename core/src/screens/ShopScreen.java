@@ -19,6 +19,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import extensions.Loader;
 import extensions.Saver;
 
+import java.util.ArrayList;
+
 import static screens.Levels.buttonClickSound;
 
 public class ShopScreen implements Screen {
@@ -41,6 +43,7 @@ public class ShopScreen implements Screen {
     private ProgressLabel progressLabel;
     private Label notEnoughPointsLabel;
     private int selectedHeroCost = 0;
+    private static String selectedHeroName;
 
     @Override
     public void show() {
@@ -86,8 +89,8 @@ public class ShopScreen implements Screen {
         stage.addActor(spriteButton3);
 
         spriteButton.addListener(new PurchaseClickListener(0, helloKittyImage, spriteButton, true)); // Free item, cost is 0
-        spriteButton2.addListener(new PurchaseClickListener(0, helloWorldImage, spriteButton2, false));
-        spriteButton3.addListener(new PurchaseClickListener(0, princessImage, spriteButton3, false));
+        spriteButton2.addListener(new PurchaseClickListener(20, helloWorldImage, spriteButton2, false));
+        spriteButton3.addListener(new PurchaseClickListener(40, princessImage, spriteButton3, false));
 
         progressLabel = new ProgressLabel();
         progressLabel.updatePoints(Loader.loadProgress());
@@ -133,6 +136,7 @@ public class ShopScreen implements Screen {
 
         // Start animating Hello Kitty by default
         animatedHeroImage = helloKittyImage;
+        selectedHeroName = "Hello Kitty";
         animateImage(animatedHeroImage);
     }
 
@@ -157,8 +161,10 @@ public class ShopScreen implements Screen {
                     Saver.saveProgress(currentPoints - cost); // Deduct the cost
                     progressLabel.updatePoints(Loader.loadProgress()); // Update the progress label
                 }
+
                 displayBoughtMessage(button);
-                notEnoughPointsLabel.setVisible(false); // Hide the "not enough points" message if purchase is successful
+                displayBoughtMessage2(button);
+                notEnoughPointsLabel.setVisible(false);
 
                 // Stop the current animation and start the new one
                 if (animatedHeroImage != null) {
@@ -176,20 +182,23 @@ public class ShopScreen implements Screen {
         for (Actor actor : button.getChildren()) {
             if (actor instanceof Label) {
                 Label label = (Label) actor;
-                if (label.getText().toString().matches("Free")) { // Check if it's a price label
-                    label.setVisible(false); // Hide the price label
-                } else if (!label.getText().toString().equals("Bought")) {
+                if (label.getText().toString().equals("20")||label.getText().toString().equals("40")) { // Змінено умову на перевірку, щоб відмітити тільки назви не як "Bought"
                     label.setText("Bought");
-                    label.setPosition(button.getWidth() / 2 - label.getWidth() / 2, 10); // Center the "Bought" label
+                    label.setPosition(label.getX()/2+20, label.getY()/2);
                 }
             }
+        }
+    }
+
+    private void displayBoughtMessage2(TextButton button) {
+        for (Actor actor : button.getChildren()) {
             if (actor instanceof Image) {
                 Image image = (Image) actor;
                 Drawable drawable = image.getDrawable();
                 if (drawable instanceof TextureRegionDrawable) {
                     TextureRegionDrawable textureRegionDrawable = (TextureRegionDrawable) drawable;
                     if (textureRegionDrawable.getRegion().getTexture().toString().contains("pearlLabel")) {
-                        actor.remove(); // Remove the pearl label if present
+                        actor.remove();
                     }
                 }
             }
@@ -237,10 +246,13 @@ public class ShopScreen implements Screen {
                             TextureRegionDrawable drawable = (TextureRegionDrawable) image.getDrawable();
                             if (drawable.getRegion().getTexture() == hellokittyTexture) {
                                 image.setDrawable(new TextureRegionDrawable(new TextureRegion(hellokittySmallTexture)));
+                                selectedHeroName = "Hello Kitty";
                             } else if (drawable.getRegion().getTexture() == helloworldTexture) {
                                 image.setDrawable(new TextureRegionDrawable(new TextureRegion(helloworldSmallTexture)));
+                                selectedHeroName = "Hello World";
                             } else if (drawable.getRegion().getTexture() == princessTexture) {
                                 image.setDrawable(new TextureRegionDrawable(new TextureRegion(princessSmallTexture)));
+                                selectedHeroName = "Princess";
                             }
                         }
                     }
@@ -264,6 +276,10 @@ public class ShopScreen implements Screen {
                 Actions.sizeTo(200, 200, 0.2f),
                 Actions.delay(0.2f)
         )));
+    }
+
+    public static String getSelectedHeroName() {
+        return selectedHeroName;
     }
 
     @Override
