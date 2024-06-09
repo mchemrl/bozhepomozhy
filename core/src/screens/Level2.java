@@ -45,14 +45,11 @@ public class Level2 implements Screen {
     @Override
     public void show() {
         deathSound = Gdx.audio.newSound(Gdx.files.internal("sounds/death.ogg"));
-        levelMaker = new LevelMaker("maps/nature1.tmx", 40*LevelMaker.SIZE, 18*LevelMaker.SIZE, 575, 591);
+        levelMaker = new LevelMaker("maps/level2.tmx", 40*LevelMaker.SIZE, 18*LevelMaker.SIZE, 575, 591);
 
         mapMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/bonetrousle.wav"));
         levelMaker.setMusic(mapMusic);
-
-        levelMaker.loadMap();
-
-        map = new TmxMapLoader().load("maps/level2.tmx");
+        map = levelMaker.loadMap();
         renderer = new OrthogonalTiledMapRenderer(map);
         camera = new OrthographicCamera();
 

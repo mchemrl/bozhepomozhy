@@ -12,8 +12,8 @@
             "scale": 0.38158333333333333,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 604.062022275606,
-                "y": 980.1266652107447
+                "x": 601.4413627429569,
+                "y": 974.8853461454466
             }
         },
         "C:/Users/mcche/Downloads/Telegram Desktop/natural2.tsx": {
@@ -22,6 +22,14 @@
         "C:/Users/mcche/Downloads/Документи/GitHub/bozhepomozhy/assets/maps/natural.tsx": {
             "dynamicWrapping": true,
             "scaleInDock": 1
+        },
+        "level2.tmx": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 608.5,
+                "y": 822
+            }
         },
         "natural.tsx": {
             "dynamicWrapping": false,
@@ -32,8 +40,8 @@
             "scale": 1,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 608.5,
-                "y": 599
+                "x": 607.5,
+                "y": 598
             }
         }
     },
@@ -50,9 +58,9 @@
     ],
     "project": "nature1.tiled-project",
     "recentFiles": [
+        "C:/Users/mcche/Downloads/Telegram Desktop/level2.tmx",
         "nature1.tmx",
-        "natural.tsx",
-        "C:/Users/mcche/Downloads/Telegram Desktop/level2.tmx"
+        "natural.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
