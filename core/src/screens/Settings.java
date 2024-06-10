@@ -18,7 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import extensions.Loader;
 import extensions.Saver;
-
+//checl
 public class Settings implements Screen {
     private Stage stage;
     private Skin skin;
@@ -69,7 +69,7 @@ public class Settings implements Screen {
                     //Levels.buttonClickSound.setVolume(1,1);
                    // buttonClickSound.setVolume(0,1);
                 }
-                Saver.saveSettings(musicDisabled, soundDisabled, Loader.loadLevelSettings());
+                Saver.saveSettings(musicDisabled, soundDisabled);
             }
         });
 
@@ -86,7 +86,7 @@ public class Settings implements Screen {
                     musicDisabled = false;
                     MainMenu.menuMusic.play();
                 }
-                Saver.saveSettings(musicDisabled, soundDisabled, Loader.loadLevelSettings());
+                Saver.saveSettings(musicDisabled, soundDisabled);
             }
         });
 
