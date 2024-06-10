@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class Loader {
 
-    public boolean loadMusicSettings(){
+    public boolean loadMusicSettings() {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(new File("core/src/extensions/settings.txt")));
             String line = reader.readLine();
@@ -18,7 +18,8 @@ public class Loader {
             return false;
         }
     }
-    public boolean loadSoundSettings(){
+
+    public boolean loadSoundSettings() {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(new File("core/src/extensions/settings.txt")));
             reader.readLine();
@@ -31,16 +32,41 @@ public class Loader {
         }
     }
 
-    public static int loadProgress(){
-        try{
+    public static int loadProgress() {
+        try {
             BufferedReader reader = new BufferedReader(new FileReader(new File("core/src/extensions/progress.txt")));
             int coins = Integer.parseInt(reader.readLine());
             reader.close();
             return coins;
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return 0;
         }
     }
 
+    public static boolean isLevel1passed() {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(new File("core/src/extensions/levels.txt")));
+            String line = reader.readLine();
+            reader.close();
+            return Boolean.parseBoolean(line);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+    public static boolean isLevel2passed() {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(new File("core/src/extensions/levels.txt")));
+            reader.readLine();
+            String secondLine = reader.readLine();
+            reader.close();
+            return Boolean.parseBoolean(secondLine);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

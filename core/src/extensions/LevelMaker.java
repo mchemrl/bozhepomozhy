@@ -64,14 +64,18 @@ public class LevelMaker {
     }
 
 
-    public void checkWinCondition(Player player) {
+    public void checkWinCondition(Player player, int level) {
 
         if (player.getX() == winCoordinateX && player.getY() == winCoordinateY)
             ((Game) Gdx.app.getApplicationListener()).setScreen(new WinScreen(new Level1()));
             if (currentScreen instanceof Level1) {
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new WinScreen(new Level1()));
+                Saver.saveLevels(true,false);
             } else if (currentScreen instanceof Level2) {
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new WinScreen(new Level2()));
+                Saver.saveLevels(true,true);
+            } else if (currentScreen instanceof  Level3) {
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new WinScreen(new Level3()));
             }
     }
 }

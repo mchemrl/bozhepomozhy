@@ -32,8 +32,8 @@ public class Levels implements Screen {
     private TextureAtlas atlas;
     private TweenManager tweenManager;
     public static Sound buttonClickSound;
-    private boolean level1Passed;
-    private boolean level2Passed;
+    public boolean level1Passed = Loader.isLevel1passed();
+    public boolean level2Passed = Loader.isLevel2passed();
     private BottomMenu bottomMenu;
     private ProgressLabel progressLabel;
 
@@ -76,9 +76,11 @@ public class Levels implements Screen {
         level2Button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(!Settings.soundDisabled) buttonClickSound.play();
-                MainMenu.menuMusic.stop();
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new Level2());
+                if(level1Passed) {
+                    if (!Settings.soundDisabled) buttonClickSound.play();
+                    MainMenu.menuMusic.stop();
+                    ((Game) Gdx.app.getApplicationListener()).setScreen(new Level2());
+                }
             }
         });
 
@@ -86,9 +88,11 @@ public class Levels implements Screen {
         level3Button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(!Settings.soundDisabled) buttonClickSound.play();
-                MainMenu.menuMusic.stop();
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new Level3());
+                if(level2Passed) {
+                    if (!Settings.soundDisabled) buttonClickSound.play();
+                    MainMenu.menuMusic.stop();
+                    ((Game) Gdx.app.getApplicationListener()).setScreen(new Level3());
+                }
             }
         });
 
