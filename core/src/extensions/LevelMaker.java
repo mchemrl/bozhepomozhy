@@ -21,6 +21,8 @@ import screens.*;
 import java.awt.*;
 
 import static com.badlogic.gdx.Gdx.app;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LevelMaker {
     private TiledMap map;
@@ -30,17 +32,20 @@ public class LevelMaker {
     private int playerStartY;
     private int winCoordinateX;
     private int winCoordinateY;
-    private Screen currentScreen;
+    private Class<? extends Screen> currentLevelClass;
+    private Class<? extends Screen> nextLevelClass;
     public static final int SIZE = 16;
     private Loader loader = new Loader();
 
-
-    public LevelMaker(String mapPath, int playerStartX, int playerStartY, int winCoordinateX, int winCoordinateY) {
+    public LevelMaker(String mapPath, int playerStartX, int playerStartY, int winCoordinateX, int winCoordinateY,
+                      Class<? extends Screen> currentLevelClass, Class<? extends Screen> nextLevelClass) {
         this.mapPath = mapPath;
         this.playerStartX = playerStartX;
         this.playerStartY = playerStartY;
         this.winCoordinateX = winCoordinateX;
         this.winCoordinateY = winCoordinateY;
+        this.currentLevelClass = currentLevelClass;
+        this.nextLevelClass = nextLevelClass;
     }
 
     public TiledMap loadMap() {
@@ -60,22 +65,11 @@ public class LevelMaker {
             mapMusic.play();
             mapMusic.setLooping(true);
         }
-
     }
 
-
-    public void checkWinCondition(Player player, int level) {
-
-        if (player.getX() == winCoordinateX && player.getY() == winCoordinateY)
-            ((Game) Gdx.app.getApplicationListener()).setScreen(new WinScreen(new Level1()));
-            if (currentScreen instanceof Level1) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new WinScreen(new Level1()));
-                Saver.saveLevels(true,false);
-            } else if (currentScreen instanceof Level2) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new WinScreen(new Level2()));
-                Saver.saveLevels(true,true);
-            } else if (currentScreen instanceof  Level3) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new WinScreen(new Level3()));
-            }
+    public void checkWinCondition(Player player) {
+        if (player.getX() == winCoordinateX && player.getY() == winCoordinateY) {
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new WinScreen(currentLevelClass, nextLevelClass));
+        }
     }
 }
