@@ -53,10 +53,14 @@ public class LevelMaker {
         return this.map;
     }
 
-    public Player createPlayer(TiledMapTileLayer collisionLayer) {
-        this.player = new Player(new Sprite(new Texture("img/player.png")), collisionLayer);
+    public Player createPlayer(TiledMapTileLayer collisionLayer, String texturePath) {
+        this.player = new Player(new Sprite(new Texture(texturePath)), collisionLayer);
         this.player.setPosition(playerStartX, playerStartY);
         return this.player;
+    }
+
+    public void updatePlayerTexture(String texturePath) {
+        this.player.updateTexture(texturePath);
     }
 
     public void setMusic(Music mapMusic) {
@@ -70,6 +74,8 @@ public class LevelMaker {
     public void checkWinCondition(Player player) {
         if (player.getX() == winCoordinateX && player.getY() == winCoordinateY) {
             ((Game) Gdx.app.getApplicationListener()).setScreen(new WinScreen(currentLevelClass, nextLevelClass));
-        }
+            if (currentLevelClass == Level1.class) Saver.saveLevels(true, false);
+            else if (currentLevelClass == Level2.class) Saver.saveLevels(true, true);}
+
     }
 }
