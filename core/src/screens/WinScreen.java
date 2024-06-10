@@ -23,9 +23,12 @@ public class WinScreen implements Screen {
     private Skin skin;
     private TextureAtlas atlas;
     private Screen currentLevel;
-
-    public WinScreen(Screen currentLevel) {
-        this.currentLevel = currentLevel;
+    private Screen nextLevel;
+    private Class<? extends Screen> currentLevelClass;
+    private Class<? extends Screen> nextLevelClass;
+    public WinScreen(Class<? extends Screen> currentLevelClass, Class<? extends Screen> nextLevelClass) {
+        this.currentLevelClass = currentLevelClass;
+        this.nextLevelClass = nextLevelClass;
     }
 
     @Override
