@@ -4,18 +4,29 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import entities.Player;
 import extensions.Loader;
 import extensions.Saver;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import static screens.Levels.buttonClickSound;
 
@@ -34,10 +45,20 @@ public class ShopScreen implements Screen {
     private Texture helloworldSmallTexture;
     private Texture princessTexture;
     private Texture princessSmallTexture;
-    private Image pearlImage;
-    private Image helloKittyImage;
+    private Image animatedHeroImage;
+    private Image helloKittyImage, helloWorldImage,princessImage;
+    private String princessSmall = "img/princesssmall.png";
+    private String helloKittySmall = "img/hellokittysmall.png";
+    private String helloWorldSmall = "img/helloworldsmall.png";
+    private String princessBig = "img/princess.png";
+    private String helloWorldBig = "img/helloworld.png";
+    private String helloKittyBig = "img/hellokitty.png";
+
     private ProgressLabel progressLabel;
     private Label notEnoughPointsLabel;
+    private int selectedHeroCost = 0;
+    private static String selectedHeroName;
+    public static boolean isNewPlayer;
 
     @Override
     public void show() {
@@ -75,16 +96,17 @@ public class ShopScreen implements Screen {
         spriteButton3.setPosition(Gdx.graphics.getWidth() / 2 + buttonWidth / 2 + buttonSpacing * 0.5f, buttonY); // Move right button to the right
 
         helloKittyImage = setupButton(spriteButton, hellokittyTexture, "Free", null, "Hello Kitty");
-        setupButton(spriteButton2, helloworldTexture, "20", new Texture(Gdx.files.internal("img/pearlLabel.png")), "Hello World");
-        setupButton(spriteButton3, princessTexture, "40", new Texture(Gdx.files.internal("img/pearlLabel.png")), "Princess");
+        helloWorldImage = setupButton(spriteButton2, helloworldTexture, "20", new Texture(Gdx.files.internal("img/pearlLabel.png")), "Hello World");
+        princessImage = setupButton(spriteButton3, princessTexture, "40", new Texture(Gdx.files.internal("img/pearlLabel.png")), "Princess");
 
         stage.addActor(spriteButton);
         stage.addActor(spriteButton2);
         stage.addActor(spriteButton3);
 
-        spriteButton.addListener(new PurchaseClickListener(0)); // Free item, cost is 0
-        spriteButton2.addListener(new PurchaseClickListener(20));
-        spriteButton3.addListener(new PurchaseClickListener(40));
+
+        spriteButton.addListener(new PurchaseClickListener(0, helloKittyImage, spriteButton, true)); // Free item, cost is 0
+        spriteButton2.addListener(new PurchaseClickListener(20, helloWorldImage, spriteButton2, false));
+        spriteButton3.addListener(new PurchaseClickListener(40, princessImage, spriteButton3, false));
 
         progressLabel = new ProgressLabel();
         progressLabel.updatePoints(Loader.loadProgress());
@@ -123,45 +145,102 @@ public class ShopScreen implements Screen {
                 }
         );
 
-        animateImage();
-
         notEnoughPointsLabel = new Label("Collect more pearls to buy new sprite", skin, "default");
         notEnoughPointsLabel.setPosition(Gdx.graphics.getWidth() / 2 - notEnoughPointsLabel.getWidth() / 2, buttonY - 40);
         notEnoughPointsLabel.setVisible(false); // Initially hidden
         stage.addActor(notEnoughPointsLabel);
+
+        // Start animating Hello Kitty by default
+        animatedHeroImage = helloKittyImage;
+        selectedHeroName = "Hello Kitty";
+        animateImage(animatedHeroImage);
     }
 
     private class PurchaseClickListener extends ClickListener {
         private final int cost;
+        private final Image heroImage;
+        private final TextButton button;
+        private final boolean isFree;
 
-        public PurchaseClickListener(int cost) {
+        public PurchaseClickListener(int cost, Image heroImage, TextButton button, boolean isFree) {
             this.cost = cost;
+            this.heroImage = heroImage;
+            this.button = button;
+            this.isFree = isFree;
         }
 
         @Override
         public void clicked(InputEvent event, float x, float y) {
             int currentPoints = Loader.loadProgress();
-            if (currentPoints >= cost) {
-                Saver.saveProgress(currentPoints - cost); // Deduct the cost
-                progressLabel.updatePoints(Loader.loadProgress()); // Update the progress label
-                displayBoughtMessage();
-                notEnoughPointsLabel.setVisible(false); // Hide the "not enough points" message if purchase is successful
+            if (isFree || currentPoints >= cost) {
+                if (!isFree) {
+                    Saver.saveProgress(currentPoints - cost); // Deduct the cost
+                    progressLabel.updatePoints(Loader.loadProgress()); // Update the progress label
+                }
+
+                displayBoughtMessage(button);
+                displayBoughtMessage2(button);
+                notEnoughPointsLabel.setVisible(false);
+
+                // Stop the current animation and start the new one
+                if (animatedHeroImage != null) {
+                    animatedHeroImage.clearActions();
+                }
+                if (heroImage.equals(princessImage)) setPlayer(princessBig, princessSmall);
+                if (heroImage.equals(helloKittyImage)) setPlayer(helloKittyBig, helloKittySmall);
+                if (heroImage.equals(helloWorldImage)) setPlayer(helloWorldBig, helloWorldSmall);
+                animatedHeroImage = heroImage;
+                animateImage(animatedHeroImage);
             } else {
                 displayNotEnoughPointsMessage();
             }
         }
+
+        private void setPlayer(String pictureBig, String pictureSmall) {
+            // Read the original image
+            Pixmap originalPixmap = new Pixmap(Gdx.files.internal(pictureBig));
+
+            // Write the original image to the new file
+            PixmapIO.writePNG(Gdx.files.local("assets/img/player.png"), originalPixmap);
+
+            // Repeat the process for the small image
+            Pixmap originalSmallPixmap = new Pixmap(Gdx.files.internal(pictureSmall));
+            PixmapIO.writePNG(Gdx.files.local("assets/img/playersmall.png"), originalSmallPixmap);
+            originalPixmap.dispose();
+            originalSmallPixmap.dispose();
+        }
+
+    }
+    private void displayBoughtMessage(TextButton button) {
+        for (Actor actor : button.getChildren()) {
+            if (actor instanceof Label) {
+                Label label = (Label) actor;
+                if (label.getText().toString().equals("20")||label.getText().toString().equals("40")) { // Змінено умову на перевірку, щоб відмітити тільки назви не як "Bought"
+                    label.setText("Bought");
+                    label.setPosition(label.getX()/2+20, label.getY()/2);
+                }
+            }
+        }
     }
 
-    private void displayBoughtMessage() {
-        Label boughtLabel = new Label("Bought", skin, "default");
-        boughtLabel.setPosition(Gdx.graphics.getWidth() / 2 - boughtLabel.getWidth() / 2, 50);
-        stage.addActor(boughtLabel);
-        boughtLabel.addAction(Actions.sequence(Actions.fadeIn(0.5f), Actions.delay(1.5f), Actions.fadeOut(0.5f), Actions.removeActor()));
+    private void displayBoughtMessage2(TextButton button) {
+        for (Actor actor : button.getChildren()) {
+            if (actor instanceof Image) {
+                Image image = (Image) actor;
+                Drawable drawable = image.getDrawable();
+                if (drawable instanceof TextureRegionDrawable) {
+                    TextureRegionDrawable textureRegionDrawable = (TextureRegionDrawable) drawable;
+                    if (textureRegionDrawable.getRegion().getTexture().toString().contains("pearlLabel")) {
+                        actor.remove();
+                    }
+                }
+            }
+        }
     }
 
     private void displayNotEnoughPointsMessage() {
         notEnoughPointsLabel.setVisible(true);
-        notEnoughPointsLabel.addAction(Actions.sequence(Actions.fadeIn(2f), Actions.delay(1.5f), Actions.fadeOut(0.5f), Actions.run(() -> notEnoughPointsLabel.setVisible(false))));
+        notEnoughPointsLabel.addAction(Actions.sequence(Actions.fadeIn(2f), Actions.delay(1.5f), Actions.fadeOut(0.3f), Actions.run(() -> notEnoughPointsLabel.setVisible(false))));
     }
 
     private Image setupButton(TextButton button, Texture texture, String label, Texture pearlTexture, String title) {
@@ -175,7 +254,7 @@ public class ShopScreen implements Screen {
         button.addActor(titleLabel);
 
         if (pearlTexture != null) {
-            pearlImage = new Image(new TextureRegionDrawable(new TextureRegion(pearlTexture)));
+            Image pearlImage = new Image(new TextureRegionDrawable(new TextureRegion(pearlTexture)));
             pearlImage.setSize(30, 30);
             pearlImage.setPosition(button.getWidth() / 2 - pearlImage.getWidth() / 2 - 15, 10);
             button.addActor(pearlImage);
@@ -192,15 +271,49 @@ public class ShopScreen implements Screen {
         return image;
     }
 
-    private void animateImage() {
-        helloKittyImage.addAction(Actions.forever(Actions.sequence(
-                Actions.run(() -> helloKittyImage.setDrawable(new TextureRegionDrawable(new TextureRegion(hellokittyTexture)))),
-                Actions.sizeTo(200, 200, 0.2f),
-                Actions.delay(0.2f),
-                Actions.run(() -> helloKittyImage.setDrawable(new TextureRegionDrawable(new TextureRegion(hellokittySmallTexture)))),
+
+    private void animateImage(Image image) {
+        image.addAction(Actions.forever(Actions.sequence(
+                Actions.run(() -> {
+                    if (image == animatedHeroImage) {
+                        if (image.getDrawable() instanceof TextureRegionDrawable) {
+                            TextureRegionDrawable drawable = (TextureRegionDrawable) image.getDrawable();
+                            if (drawable.getRegion().getTexture() == hellokittyTexture) {
+                                image.setDrawable(new TextureRegionDrawable(new TextureRegion(hellokittySmallTexture)));
+                                selectedHeroName = "Hello Kitty";
+                            } else if (drawable.getRegion().getTexture() == helloworldTexture) {
+                                image.setDrawable(new TextureRegionDrawable(new TextureRegion(helloworldSmallTexture)));
+                                selectedHeroName = "Hello World";
+                            } else if (drawable.getRegion().getTexture() == princessTexture) {
+                                image.setDrawable(new TextureRegionDrawable(new TextureRegion(princessSmallTexture)));
+                                selectedHeroName = "Princess";
+                            }
+                        }
+                    }
+                }),
                 Actions.sizeTo(200, 170, 0.2f),
+                Actions.delay(0.2f),
+                Actions.run(() -> {
+                    if (image == animatedHeroImage) {
+                        if (image.getDrawable() instanceof TextureRegionDrawable) {
+                            TextureRegionDrawable drawable = (TextureRegionDrawable) image.getDrawable();
+                            if (drawable.getRegion().getTexture() == hellokittySmallTexture) {
+                                image.setDrawable(new TextureRegionDrawable(new TextureRegion(hellokittyTexture)));
+                            } else if (drawable.getRegion().getTexture() == helloworldSmallTexture) {
+                                image.setDrawable(new TextureRegionDrawable(new TextureRegion(helloworldTexture)));
+                            } else if (drawable.getRegion().getTexture() == princessSmallTexture) {
+                                image.setDrawable(new TextureRegionDrawable(new TextureRegion(princessTexture)));
+                            }
+                        }
+                    }
+                }),
+                Actions.sizeTo(200, 200, 0.2f),
                 Actions.delay(0.2f)
         )));
+    }
+
+    public static String getSelectedHeroName() {
+        return selectedHeroName;
     }
 
     @Override
