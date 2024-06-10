@@ -45,7 +45,7 @@ public class Level3 implements Screen {
     @Override
     public void show() {
         deathSound = Gdx.audio.newSound(Gdx.files.internal("sounds/death.ogg"));
-        levelMaker = new LevelMaker("maps/level3.tmx", 40*LevelMaker.SIZE, 18*LevelMaker.SIZE, 847, 480);
+        levelMaker = new LevelMaker("maps/level3.tmx", 40*LevelMaker.SIZE, 18*LevelMaker.SIZE, 847, 480, Level3.class, Level3.class);
 
         mapMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/megalovania.wav"));
         levelMaker.setMusic(mapMusic);
@@ -72,7 +72,7 @@ public class Level3 implements Screen {
         enemies.add(crab);
 
         crab2 = new Crab(new Sprite(crabTexture), (TiledMapTileLayer) map.getLayers().get(1), 30, 0);
-        crab2.setPosition(43 * 16, 34 * 16);
+        crab2.setPosition(43 * 16, 34  * 16);
         enemies.add(crab2);
 
         crab3 = new Crab(new Sprite(crabTexture), (TiledMapTileLayer) map.getLayers().get(1), 0, 30);
